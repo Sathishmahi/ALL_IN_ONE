@@ -11,4 +11,6 @@ class handle_imbalanced_data:
   def using_smotetomek(self,feature:pd.DataFrame,label:pd.Series)->pd.DataFrame:
     smk = SMOTETomek()
     X_res,y_res=smk.fit_resample(feature,label)
+    x_final=pd.concat((X_res,y_res),axis=1)
+    final_df.to_csv('all_datasets/after_handle_imbalanced_data.csv')
     return X_res,y_res

@@ -41,7 +41,7 @@ class hyper_parameter_classifier:
       classifier_name_lower=classifier_name.lower()
       clf=all_model[classifier_name]
       best_para=self._return_best_hyper_para(model=clf,model_name=classifier_name,x=x,y=y)
-      print(best_para)
+     
       return best_para
 
     except Exception as e:

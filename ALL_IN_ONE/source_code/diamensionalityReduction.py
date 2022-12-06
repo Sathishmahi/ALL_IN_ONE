@@ -10,4 +10,5 @@ class diamensionality_reduction:
     scaler=StandardScaler()
     pipe=make_pipeline(scaler,PCA(n_components = 0.5))
     x_pca=pipe.fit_transform(feature)
+    x_pca.to_csv('all_datasets/after_diamension_reduce_data.csv')
     return x_pca

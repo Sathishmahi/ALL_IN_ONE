@@ -34,6 +34,8 @@ class detect_remove_outliers:
     try:
       ind_li,_=self._detect_outlier(data)
       new_dataframe=data.drop(ind_li)
+      new_dataframe.to_csv('all_datasets/after_remove_outlier.csv')
+    
       return new_dataframe
     except Exception as e:
       raise e

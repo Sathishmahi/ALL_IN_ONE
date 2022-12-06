@@ -28,7 +28,7 @@ class find_correlation:
 
                 most_corr_dic.update({f'{i} vs {j}':corr_score})
         
-      print(remove_col_li)
+      
       return corr_dic,most_corr_dic,remove_col_li
     except Exception as e:
       raise e
@@ -36,6 +36,8 @@ class find_correlation:
     try:
       _,_,corr_list=self._retun_corr(data)
       print(corr_list)
-      return data.drop(columns=corr_list)
+      after_corr_col_remove_data=data.drop(columns=corr_list)
+      after_corr_col_remove_data.to_csv('all_datasets/after_corr_col_remove_data.csv')
+      return after_corr_col_remove_data
     except Exception as e:
       raise e

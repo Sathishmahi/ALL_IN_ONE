@@ -14,6 +14,7 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
     self.hyper_parameter_classifier_obj=hyper_parameter_classifier()
     self._final_all_model_dic=dict()
     self.model_dict=dict()
+    
   def _model_created(self,isClassification=True,hyper_parameter=dict()):
     model_list=[]
     try:
