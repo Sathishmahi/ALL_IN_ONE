@@ -22,4 +22,7 @@ classifier_final_dividegroup_list=[]
 classifier_model_score=dict()
 all_model_name=['logisticregression','decisiontreeclassifier','randomforestclassifier','svc','xgbclassifier']
 
+#handle_NA_in_cat_data
 
+handle_miss_val_cat_dict=dict()
+handle_catData_dict=dict()
