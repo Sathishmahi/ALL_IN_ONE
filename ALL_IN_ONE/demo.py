@@ -26,11 +26,11 @@ feature = pd.DataFrame(np.hstack([raw_df.values[::2, :], raw_df.values[1::2, :2]
 label = pd.DataFrame(raw_df.values[1::2, 2])
 # load_model=joblib.load('/config/workspace/ALL_IN_ONE_ML/model_dir/2022_12_06_13_17_47_891414_kmeans_model_0_DecisionTreeRegressor(ccp_alpha=0.001, min_samples_leaf=3, min_samples_split=3).pkl')
 # print(load_model.predict(feature))
-train=non_hyper_parameter_classifier_model()
+# train=non_hyper_parameter_classifier_model()
 # a,b=train.model_predicted(feature)
 # print(len(a))
 # print(len(b))
-train.split_data_training(feature,label,hyper_parameter=True)
+# train.split_data_training(feature,label,hyper_parameter=True)
 
 print('===================================================')
 
@@ -61,3 +61,41 @@ print('===================================================')
 # hyper=hyper_parameter_classifier()
 # hyper.hyper_parameter_tuneing_classifier('xgbclassifier',feature,label)
 
+from sklearn.linear_model import LinearRegression
+out=detect_remove_outliers()
+df=pd.read_csv('/config/workspace/ALL_IN_ONE/all_datasets/demo.csv')
+x=df.drop(columns=['label'])
+y=df['label']
+
+# x,y=out.remove_outlier(x,y)
+# # ln=LinearRegression()
+# # ln.fit(x,y)
+# y=pd.DataFrame(y,columns=['label'])
+
+# final=pd.concat((x,y),axis=1)
+# final.to_csv('all_datasets/demo1.csv')
+from all_models.combine_all import combine_all_functions
+cf=combine_all_functions()
+
+cf.model_trainer('/config/workspace/ALL_IN_ONE/all_datasets/demo1.csv','label',False)
+# print(x.head)
+# # hyper=hyper_parameter_classifier()
+# best=hyper.hyper_parameter_tuneing_classifier('linearRegression',x,y)
+# ln=LinearRegression()
+# #ln.set_params(best)
+# ln.fit(x,y)
+# print('DONe')
+# import joblib
+# mo=joblib.load_model('/config/workspace/ALL_IN_ONE/KMeans_model_dir/kMeans.pkl')
+# mo.predict(x)  def remove_outlier(self,data:pd.DataFrame,label:pd.DataFrame)->pd.DataFrame:
+#  def remove_outlier(self,data:pd.DataFrame,label:pd.DataFrame)->pd.DataFrame:
+#     try:
+#       ind_li,_=self._detect_outlier(data)
+#       new_dataframe=data.drop(ind_li)
+#       # feature=new_dataframe.drop(columns=out_col_name)
+#       label=label.drop(ind_li)
+#       new_dataframe.to_csv('all_datasets/after_remove_outlier.csv')
+    
+#       return new_dataframe,label
+#     except Exception as e:
+#       raise e

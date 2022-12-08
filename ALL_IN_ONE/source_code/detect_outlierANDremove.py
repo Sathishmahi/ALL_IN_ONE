@@ -18,7 +18,6 @@ class detect_remove_outliers:
         lcl=q1-1.5*IQR
         
         ind=np.where((df[col]<lcl) | (df[col]>ucl))[0]
-        
         per=(len(ind)/len(df))*100
         if len(ind)!=0:
           [ind_li.append(i) for i in ind]
@@ -26,19 +25,20 @@ class detect_remove_outliers:
         col_per_dic.update({col:f'percentage {per}'})
       
       user_outlier_li.append(outlier_ind_dic)
-      user_outlier_li.append(col_per_dic)  
+      user_outlier_li.append(col_per_dic) 
+      #print(set(ind_li))
       return list(set(ind_li)),user_outlier_li
     except Exception as e:
       raise e
-  def remove_outlier(self,data:pd.DataFrame,out_col_name:str)->pd.DataFrame:
+  def remove_outlier(self,data:pd.DataFrame,label:pd.DataFrame)->pd.DataFrame:
     try:
       ind_li,_=self._detect_outlier(data)
       new_dataframe=data.drop(ind_li)
-      feature=new_dataframe.drop(columns=out_col_name)
-      label=new_dataframe[out_col_name]
+      # feature=new_dataframe.drop(columns=out_col_name)
+      label=label.drop(ind_li)
       new_dataframe.to_csv('all_datasets/after_remove_outlier.csv')
     
-      return feature,label
+      return new_dataframe,label
     except Exception as e:
       raise e
 

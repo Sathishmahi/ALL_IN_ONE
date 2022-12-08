@@ -49,6 +49,7 @@ class combine_all_functions:
         print(f'===================done replace_nan_CAT=========================')
         handle_cat_data=self.cat_value_obj.combine_all(replace_nan_cat_data)
         print(f'===================done handle_CAT data=========================')
+        #replace_nan_data=self.replace_nan_obj.mean_median_mode(feature)
         replace_nan_data=self.replace_nan_obj.replace_nan_knnimpute(handle_cat_data)
         print(f'===================done replace_nan=========================')
         if isClassification:
@@ -57,13 +58,17 @@ class combine_all_functions:
                 replace_nan_data,label=handle_imbalanced_data=self.handle_imbalanced_data_obj.using_smotetomek(replace_nan_data,label)
         
         find_corr_data=self.find_correlation_obj.remove_corr_col(replace_nan_data)
+        #find_corr_data=self.find_correlation_obj.remove_corr_col(feature)
         print(f'===================done find corr data=========================')
-        find_corr_data['label']=raw_data[label_column]
-        detect_remove_outliers_data,label=self.detect_remove_outliers_obj.remove_outlier(find_corr_data,'label')
+        # find_corr_data['label']=raw_data[label_column]
         print(f'===================done remove outliers data=========================')
-        transformation_data=self.transformation_obj.std_scaler_dist(detect_remove_outliers_data)
+        #transformation_data=self.transformation_obj.std_scaler_dist(detect_remove_outliers_data)
+        transformation_data=self.transformation_obj.std_scaler_dist(find_corr_data)
+        detect_remove_outliers_data,label=self.detect_remove_outliers_obj.remove_outlier(transformation_data,raw_data[label_column])
+
+        # transformation_data=self.transformation_obj.std_scaler_dist(feature)
         print(f'===================done transformation data=========================')
-        return transformation_data,label
+        return detect_remove_outliers_data,label
 
     def model_trainer(self,path:str,label_column=None,isClassification=True):
         final_pre_process_data,label=self._combine_all_data_preprocessing(path,label_column,isClassification)

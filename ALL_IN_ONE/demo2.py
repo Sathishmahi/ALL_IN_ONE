@@ -16,6 +16,8 @@ label=label.set_axis(['label'],axis=1)
 final=pd.concat((feature,label),axis=1)
 final.to_csv('all_datasets/demo.csv')
 
+
+
 # data=pd.read_csv('/config/workspace/melb_data.csv')
 # cf=combine_all_functions()
 # d=cf.combine('/config/workspace/melb_data.csv','Propertycount',False)
