@@ -184,6 +184,8 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
         kmeans_label=self._cluster_data(data=feature,n_groups=2)
         feature['outcome']=label
         feature['kmeans_label']=kmeans_label
+        print(type(label))
+        label=pd.DataFrame(label)
         if (label.nunique()/len(label)>0.1).values[0]:
           all_model_name=['linearregression','randomforestregressor','svr','decisiontreeregressor','kneighborsregressor']
 
@@ -191,7 +193,7 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
           all_model_name=['logisticregression','decisiontreeclassifier','randomforestclassifier','svc','xgbclassifier','kneighborsclassifier']
 
         for model_name in all_model_name:
-
+          print(f'mode name ==========  {model_name} ======================')
           best_para_of_model=self.hyper_parameter_classifier_obj.hyper_parameter_tuneing_classifier(model_name,x=feature,y=label)
           all_best_parameter_dict.update({model_name:best_para_of_model})
         

@@ -30,13 +30,15 @@ class detect_remove_outliers:
       return list(set(ind_li)),user_outlier_li
     except Exception as e:
       raise e
-  def remove_outlier(self,data:pd.DataFrame)->pd.DataFrame:
+  def remove_outlier(self,data:pd.DataFrame,out_col_name:str)->pd.DataFrame:
     try:
       ind_li,_=self._detect_outlier(data)
       new_dataframe=data.drop(ind_li)
+      feature=new_dataframe.drop(columns=out_col_name)
+      label=new_dataframe[out_col_name]
       new_dataframe.to_csv('all_datasets/after_remove_outlier.csv')
     
-      return new_dataframe
+      return feature,label
     except Exception as e:
       raise e
 

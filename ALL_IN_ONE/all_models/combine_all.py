@@ -13,9 +13,10 @@ from source_code.replace_NaN import replace_nan
 from source_code.handle_categorical_features import cat_value
 
 
+
 class combine_all_functions:
     def __init__(self):
-        non_hyper_parameter_classifier_model_obj=non_hyper_parameter_classifier_model()
+        self.non_hyper_parameter_classifier_model_obj=non_hyper_parameter_classifier_model()
         self.replace_nan_categorical_data_obj=replace_nan_categorical_data()
         self.hyper_parameter_classifier_obj=hyper_parameter_classifier()
         self.detect_remove_outliers_obj=detect_remove_outliers()
@@ -32,7 +33,7 @@ class combine_all_functions:
         label_li=label[cl_name].values.tolist()
         all_count_li=[]
         is_im=False
-        for i in df[0].unique():
+        for i in label[cl_name].unique():
             all_count_li.append(label_li.count(i))
         for i in all_count_li:
             for j in all_count_li:
@@ -57,16 +58,18 @@ class combine_all_functions:
         
         find_corr_data=self.find_correlation_obj.remove_corr_col(replace_nan_data)
         print(f'===================done find corr data=========================')
-        detect_remove_outliers_data=self.detect_remove_outliers_obj.remove_outlier(find_corr_data)
+        find_corr_data['label']=raw_data[label_column]
+        detect_remove_outliers_data,label=self.detect_remove_outliers_obj.remove_outlier(find_corr_data,'label')
         print(f'===================done remove outliers data=========================')
         transformation_data=self.transformation_obj.std_scaler_dist(detect_remove_outliers_data)
         print(f'===================done transformation data=========================')
         return transformation_data,label
 
     def model_trainer(self,path:str,label_column=None,isClassification=True):
-        final_pre_process_data,label=self._combine_all_data_preprocessing(data)
-
-
+        final_pre_process_data,label=self._combine_all_data_preprocessing(path,label_column,isClassification)
+        print(final_pre_process_data.isna().sum())
+        self.non_hyper_parameter_classifier_model_obj.split_data_training(final_pre_process_data,label,hyper_parameter=True)
+        print('++++++++++++++++++++++++++++++++ training compleate ++++++++++++++++++++++++++++++++++++++++++')
 
 
 
