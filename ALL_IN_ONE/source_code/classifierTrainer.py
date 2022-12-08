@@ -86,7 +86,9 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
     try:
       kmeans=KMeans(n_clusters=n_groups)
       #data=data.drop(['outcome','kmeans_label'],axis=1)
-      kmeans_label=kmeans.fit_predict(data)
+      final_data= data.loc[:, ~data.columns.str.contains('^Unnamed')]
+      print(f'KMeans model trainned columns name ---->   {final_data.columns}')
+      kmeans_label=kmeans.fit_predict(final_data)
       
       path=os.path.join('KMeans_model_dir')
       os.makedirs(path,exist_ok=True)
@@ -129,16 +131,17 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
               if '.pkl' in kmeans_model:
 
                 path=os.path.join(kmeans_path,kmeans_model)
+                print(path)
                 loaded_kmean_model=joblib.load(path)
 
                 kmean_label=loaded_kmean_model.predict(feature_copy)
-                print(kmean_label)
                 feature_copy['kmean_label']=kmean_label
                 unique_val=feature_copy['kmean_label'].unique()
                 for unique in unique_val:
                   kmeans_label_feature=feature_copy[feature_copy['kmean_label']==unique]
 
-                  for model in list(trained_model_list):
+                  for model in list(trained_model_list[-2:]):
+
                     if f'kmeans_model_{unique}_' in model:
                       model=joblib.load(os.path.join(model_path,model))
                       kmean_feature=kmeans_label_feature.drop(columns=['kmean_label'])
@@ -162,7 +165,14 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
         kmeans_path=input('enter the KMeans dir path')
         model_path=input('enter the trained model dir path')
         final_out,final_df=self._helper_model_predicted(kmeans_path=kmeans_path,model_path=model_path,feature=feature_copy)
-        
+        if (len(final_df)==len(final_out)):
+          counter=0
+          for df,out in zip(final_out,final_df):
+            out_df=pd.DataFrame(out,columns=['predicted_outcome'])
+            final_df=pd.concat((df,predicted_outcome),axis=1)
+            path=f'all_datasets/predicted_outCome_{counter}.csv'
+            final_df.to_csv(path)
+            print(f'predicted outcome csv path ----->  {path}')
         return final_out,final_df
 
       elif inp.lower()=='n':

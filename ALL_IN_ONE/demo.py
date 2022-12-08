@@ -76,9 +76,18 @@ y=df['label']
 # final.to_csv('all_datasets/demo1.csv')
 from all_models.combine_all import combine_all_functions
 cf=combine_all_functions()
+df=pd.read_csv('/config/workspace/ALL_IN_ONE/all_datasets/demo1.csv')
+print(df.columns)
+feature=df.drop(columns=['label','0','8'])
+feature= feature.loc[:, ~feature.columns.str.contains('^Unnamed')]
 
-cf.model_trainer('/config/workspace/ALL_IN_ONE/all_datasets/demo1.csv','label',False)
-# print(x.head)
+print(feature.head(1))
+out_=df['label']
+a,b=cf.model_predict(feature)
+print('done')
+# pre=joblib.load('/config/workspace/ALL_IN_ONE/KMeans_model_dir/kMeans.pkl').predict(feature)
+# print(pre)
+# # print(x.head)
 # # hyper=hyper_parameter_classifier()
 # best=hyper.hyper_parameter_tuneing_classifier('linearRegression',x,y)
 # ln=LinearRegression()

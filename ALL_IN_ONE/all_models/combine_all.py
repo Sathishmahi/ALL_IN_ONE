@@ -76,5 +76,6 @@ class combine_all_functions:
         self.non_hyper_parameter_classifier_model_obj.split_data_training(final_pre_process_data,label,hyper_parameter=True)
         print('++++++++++++++++++++++++++++++++ training compleate ++++++++++++++++++++++++++++++++++++++++++')
 
-
+    def model_predict(self,data:pd.DataFrame):
+        self.non_hyper_parameter_classifier_model_obj.model_predicted(data)
 
