@@ -8,6 +8,7 @@ from source_code.transformation import transformation
 from source_code.classifierTrainer import non_hyper_parameter_classifier_model
 from source_code.replace_NaN import replace_nan
 from sklearn.datasets import load_iris
+from source_code.handle_missing_value_in_catData import replace_nan_categorical_data
 import pandas as pd
 import numpy as np
 import joblib
@@ -24,13 +25,17 @@ x=df.drop(columns=['label'])
 y=df['label']
 from all_models.combine_all import combine_all_functions
 cf=combine_all_functions()
-path='/config/workspace/ALL_IN_ONE/all_datasets/demo.csv'
+path='/config/workspace/ALL_IN_ONE/train.csv'
 df=pd.read_csv(path)
-feature=df.drop(columns=['label'])
-out_=df['label']
+# feature=df.drop(columns=['Survived'])
+# label=df['Survived']
+# nan=replace_nan_categorical_data()
+# df=nan.combine_all(feature)
+# print(df.head())
+
 # dc=detect_remove_outliers()
 # dc.remove_outlier(feature,out_)
-cf._combine_all_data_preprocessing(path,'label',False)
+cf._combine_all_data_preprocessing(path,'Survived')
 #train=non_hyper_parameter_classifier_model()
 
 # train.split_data_training(a,b,hyper_parameter=True)

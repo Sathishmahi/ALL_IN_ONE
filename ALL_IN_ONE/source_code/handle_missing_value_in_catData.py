@@ -29,8 +29,13 @@ class replace_nan_categorical_data:
           predict_in=data[data[label].isnull()].index.tolist()
 
           feature_ind=[ind for ind in data.index if ind not in predict_in]
-          x_train=feature.iloc[feature_ind]
+          print(feature_ind)
+          print('====================================')
+          print(feature.index)
+          
           y_train=label_data.iloc[feature_ind]
+          print('DONE Y_TRAIN')
+          x_train=feature.iloc[feature_ind]
           x_test=feature.iloc[predict_in]
           log=LogisticRegression()
           log.fit(x_train,y_train)
@@ -48,10 +53,13 @@ class replace_nan_categorical_data:
       raise CustomException(sys)
   def combine_all(self,data:pd.DataFrame):
     try:
-      data=self.remove_col(data)
-      data=self.handle_miss_values_catogorical_features(data)
-      data=self.replace_nan_most_frequncy_data(data)
-      return data
+      remove_data=self.remove_col(data)
+      print('=========REMOVE COLUMNS DONE===========================')
+      cat_feature_data=self.handle_miss_values_catogorical_features(remove_data)
+      print('=========CAT FEATURES DONE===========================')
+      fianl_data=self.replace_nan_most_frequncy_data(cat_feature_data)
+      print('=========REPLACE NONE MOST FREQUENCY FEATURE DONE===========================')
+      return fianl_data
     except:
       raise CustomException(sys)
     

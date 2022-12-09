@@ -44,12 +44,14 @@ class combine_all_functions:
                     return is_im
         return is_im
     def demo(self,feature:pd.DataFrame,label:pd.DataFrame,isClassification=True,predict=False)->pd.DataFrame:
-        replace_nan_cat_data=self.replace_nan_categorical_data_obj.combine_all(feature)
-        print(f'===================done replace_nan_CAT=========================')
-        handle_cat_data=self.cat_value_obj.combine_all(replace_nan_cat_data)
+        handle_cat_data=self.cat_value_obj.combine_all(feature)
         print(f'===================done handle_CAT data=========================')
+        replace_nan_cat_data=self.replace_nan_categorical_data_obj.combine_all(handle_cat_data)
+        print(f'===================done replace_nan_CAT=========================')
+        
+       
         #replace_nan_data=self.replace_nan_obj.mean_median_mode(feature)
-        replace_nan_data=self.replace_nan_obj.replace_nan_knnimpute(handle_cat_data)
+        replace_nan_data=self.replace_nan_obj.replace_nan_knnimpute(replace_nan_cat_data)
         print(f'===================done replace_nan=========================')
         if isClassification:
             TorF=self.is_imbalanced(pd.DataFrame(label,columns=['label']),cl_name='label')
