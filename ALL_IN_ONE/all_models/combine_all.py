@@ -11,7 +11,7 @@ from source_code.find_Corr_remove import find_correlation
 from source_code.transformation import transformation
 from source_code.replace_NaN import replace_nan
 from source_code.handle_categorical_features import cat_value
-
+from train_test_split import train_test_split_fn
 
 
 class combine_all_functions:
@@ -41,10 +41,7 @@ class combine_all_functions:
                     is_im=True
                     return is_im
         return is_im
-    def _combine_all_data_preprocessing(self,path:str,label_column:str,isClassification=True):
-        raw_data=pd.read_csv(path)
-        feature=raw_data.drop(columns=label_column)
-        label=raw_data[label_column]
+    def demo(self,feature;pd.DataFrame,label:pd.DataFrame,isClassification=True)->pd.DataFrame:
         replace_nan_cat_data=self.replace_nan_categorical_data_obj.combine_all(feature)
         print(f'===================done replace_nan_CAT=========================')
         handle_cat_data=self.cat_value_obj.combine_all(replace_nan_cat_data)
@@ -69,13 +66,30 @@ class combine_all_functions:
         # transformation_data=self.transformation_obj.std_scaler_dist(feature)
         print(f'===================done transformation data=========================')
         return detect_remove_outliers_data,label
-
-    def model_trainer(self,path:str,label_column=None,isClassification=True):
-        final_pre_process_data,label=self._combine_all_data_preprocessing(path,label_column,isClassification)
+    def model_trainer(self,feature:pd.DataFrame,label:pd.DataFrame,isClassification=True):
+        #final_pre_process_data,label=self._combine_all_data_preprocessing(path,label_column,isClassification)
         print(final_pre_process_data.isna().sum())
-        self.non_hyper_parameter_classifier_model_obj.split_data_training(final_pre_process_data,label,hyper_parameter=True)
+        self.non_hyper_parameter_classifier_model_obj.split_data_training(feature,label,hyper_parameter=True)
         print('++++++++++++++++++++++++++++++++ training compleate ++++++++++++++++++++++++++++++++++++++++++')
-
     def model_predict(self,data:pd.DataFrame):
         self.non_hyper_parameter_classifier_model_obj.model_predicted(data)
+    def _combine_all_data_preprocessing(self,path:str,label_column:str,isClassification=True):
+        raw_data=pd.read_csv(path)
+        feature=raw_data.drop(columns=label_column)
+        label=raw_data[label_column]
+        x_train,x_test,y_train,y_test=train_test_split_fn(feature=feature,label=label)
+        data_list=list(x_train,x_test,y_train,y_test)
+        for x in data_list:
+            for y in data_list:
+                if 'train' in x and 'train' in y and x!=y:
+                    train_feature,train_label=self.demo(x_train,y_train)
+                    self.model_trainer()
+                elif if 'test' in x and 'test' in y and x!=y:
+                    test_faeture,test_label=self.demo(x_test,y_test)
+                    
+
+
+    
+
+
 
