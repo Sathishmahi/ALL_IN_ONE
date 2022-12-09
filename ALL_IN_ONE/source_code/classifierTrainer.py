@@ -10,6 +10,7 @@ from source_code.hyper_parameter import hyper_parameter_classifier
 from model_folder.classification import svc,logisticRegression,randomForestClassifier,xgbClassifier,knnClassifier,decisionTreeClassifier,naive_bayes_Gaus,naive_bayes_Mul
 from model_folder.regression import linearRegression,randomForestRegressor,svr,kneighborsRegressor,randomForestRegressor,decisiontreeregressor
 from source_code.exception import CustomException
+score_dict=dict()
 class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
   def __init__(self):
     self.hyper_parameter_classifier_obj=hyper_parameter_classifier()
@@ -148,6 +149,10 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
 
                 kmean_label=loaded_kmean_model.predict(feature_copy)
                 feature_copy['kmean_label']=kmean_label
+                for unique in feature_copy['kmean_label'].unique():
+                  ind=feature_copy[feature_copy['kmean_label']==unique].index
+                  score_dict.update({unique:ind})
+                  print(ind)
                 unique_val=feature_copy['kmean_label'].unique()
                 for unique in unique_val:
                   kmeans_label_feature=feature_copy[feature_copy['kmean_label']==unique]

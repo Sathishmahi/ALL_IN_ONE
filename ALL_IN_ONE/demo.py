@@ -35,11 +35,11 @@ df=pd.read_csv(path)
 
 # dc=detect_remove_outliers()
 # dc.remove_outlier(feature,out_)
-cf._combine_all_data_preprocessing(path,'Survived')
+dic=cf._combine_all_data_preprocessing(path,'Survived')
 #train=non_hyper_parameter_classifier_model()
 
 # train.split_data_training(a,b,hyper_parameter=True)
-print('done')
+print(dic)
 
 
 #Index(['0', '1', '2', '4', '5', '6', '7', '9', '10', '11', '12']
