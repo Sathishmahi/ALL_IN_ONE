@@ -76,14 +76,15 @@ y=df['label']
 # final.to_csv('all_datasets/demo1.csv')
 from all_models.combine_all import combine_all_functions
 cf=combine_all_functions()
-df=pd.read_csv('/config/workspace/ALL_IN_ONE/all_datasets/demo1.csv')
-print(df.columns)
-feature=df.drop(columns=['label','0','8'])
-feature= feature.loc[:, ~feature.columns.str.contains('^Unnamed')]
+path='/config/workspace/ALL_IN_ONE/all_datasets/demo1.csv'
+df=pd.read_csv(path)
+# print(df.columns)
+# feature=df.drop(columns=['label','0','8'])
+# feature= feature.loc[:, ~feature.columns.str.contains('^Unnamed')]
 
-print(feature.head(1))
-out_=df['label']
-a,b=cf.model_predict(feature)
+# print(feature.head(1))
+# out_=df['label']
+a,b=cf._combine_all_data_preprocessing(path,'label',False)
 print('done')
 # pre=joblib.load('/config/workspace/ALL_IN_ONE/KMeans_model_dir/kMeans.pkl').predict(feature)
 # print(pre)
