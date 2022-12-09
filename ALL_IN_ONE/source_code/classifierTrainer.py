@@ -9,7 +9,7 @@ from sklearn.cluster import KMeans
 from source_code.hyper_parameter import hyper_parameter_classifier
 from model_folder.classification import svc,logisticRegression,randomForestClassifier,xgbClassifier,knnClassifier,decisionTreeClassifier,naive_bayes_Gaus,naive_bayes_Mul
 from model_folder.regression import linearRegression,randomForestRegressor,svr,kneighborsRegressor,randomForestRegressor,decisiontreeregressor
-from exception import CustomException
+from source_code.exception import CustomException
 class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
   def __init__(self):
     self.hyper_parameter_classifier_obj=hyper_parameter_classifier()

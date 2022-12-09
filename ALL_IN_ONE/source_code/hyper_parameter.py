@@ -5,7 +5,7 @@ from path_name_provoiders.all_names import best_parameter as best_parameter
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import RandomizedSearchCV
-from exception import CustomException
+from source_code.exception import CustomException
 import sys
 from model_folder.all_model_dic import all_model
 class hyper_parameter_classifier:

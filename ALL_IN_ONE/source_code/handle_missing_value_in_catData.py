@@ -1,7 +1,7 @@
 from sklearn.linear_model import LogisticRegression
 import pandas as pd
 from path_name_provoiders.all_names import handle_miss_val_cat_dict as dic
-from exception import CustomException
+from esource_code.xception import CustomException
 import sys
 class replace_nan_categorical_data:
   def __init__(self):

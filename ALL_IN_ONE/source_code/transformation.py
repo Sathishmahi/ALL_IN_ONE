@@ -1,7 +1,7 @@
 from sklearn.preprocessing import StandardScaler
 import pandas as pd
 import sys
-from exception import CustomException
+from source_code.exception import CustomException
 class transformation:
   def __init__(self):
     pass

@@ -60,9 +60,10 @@ print('===================================================')
 # print(feature.head())
 # hyper=hyper_parameter_classifier()
 # hyper.hyper_parameter_tuneing_classifier('xgbclassifier',feature,label)
-
+from source_code.demo_ import abc
+abc(10,0)
 from sklearn.linear_model import LinearRegression
-out=detect_remove_outliers()
+#out=detect_remove_outliers()
 df=pd.read_csv('/config/workspace/ALL_IN_ONE/all_datasets/demo.csv')
 x=df.drop(columns=['label'])
 y=df['label']
@@ -84,7 +85,7 @@ df=pd.read_csv(path)
 
 # print(feature.head(1))
 # out_=df['label']
-a,b=cf._combine_all_data_preprocessing(path,'label',False)
+#a,b=cf._combine_all_data_preprocessing(path,'label',False)
 print('done')
 # pre=joblib.load('/config/workspace/ALL_IN_ONE/KMeans_model_dir/kMeans.pkl').predict(feature)
 # print(pre)

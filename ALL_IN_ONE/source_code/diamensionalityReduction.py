@@ -2,7 +2,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import make_pipeline
 from sklearn.decomposition import PCA
 import pandas as pd
-from exception import CustomException
+from source_code.exception import CustomException
 import sys
 class diamensionality_reduction:
   def __init__(self):

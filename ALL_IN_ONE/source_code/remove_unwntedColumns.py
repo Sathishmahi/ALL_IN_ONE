@@ -1,5 +1,5 @@
 import pandas as pd
-from exception import CustomException
+from source_code.exception import CustomException
 import sys
 class remove_col:
   def __init__(self):

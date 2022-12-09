@@ -1,6 +1,6 @@
 from imblearn.combine import SMOTEENN,SMOTETomek
 import pandas as pd
-from exception import CustomException
+from source_code.exception import CustomException
 import sys
 class handle_imbalanced_data:
   

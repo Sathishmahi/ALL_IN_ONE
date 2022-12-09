@@ -5,7 +5,7 @@ from path_name_provoiders.all_names import outlier_column_percentage_dic as col_
 import pandas as pd
 import numpy as np
 import sys
-from exception import CustomException
+from source_code.exception import CustomException
 class detect_remove_outliers:
   def __init__(self):pass
   def _detect_outlier(self,data:pd.DataFrame)->list:

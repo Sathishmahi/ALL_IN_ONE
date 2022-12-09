@@ -1,6 +1,6 @@
 from sklearn.impute import KNNImputer
 import pandas as pd
-from exception import CustomException
+from source_code.exception import CustomException
 import sys
 
 class replace_nan:

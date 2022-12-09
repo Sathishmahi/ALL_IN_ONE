@@ -1,7 +1,7 @@
 from sklearn.preprocessing import LabelEncoder,LabelBinarizer
 import pandas as pd
 from path_name_provoiders.all_names import handle_catData_dict as dic\
-from exception import CustomException
+from source_code.exception import CustomException
 import sys
 
 class cat_value:
