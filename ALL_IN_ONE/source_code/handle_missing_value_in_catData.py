@@ -51,7 +51,7 @@ class replace_nan_categorical_data:
       data=self.remove_col(data)
       data=self.handle_miss_values_catogorical_features(data)
       data=self.replace_nan_most_frequncy_data(data)
-      return data.reset_index()
+      return data
     except:
       raise CustomException(sys)
     

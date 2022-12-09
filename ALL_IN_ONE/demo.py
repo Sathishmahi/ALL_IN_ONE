@@ -36,3 +36,5 @@ cf._combine_all_data_preprocessing(path,'label',False)
 # train.split_data_training(a,b,hyper_parameter=True)
 print('done')
 
+
+#Index(['0', '1', '2', '4', '5', '6', '7', '9', '10', '11', '12']

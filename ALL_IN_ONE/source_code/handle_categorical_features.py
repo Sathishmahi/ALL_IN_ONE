@@ -76,7 +76,7 @@ class cat_value:
             one_data=self._one_hot_encoding(remove_col)
             label_data=self._label_encodeing(one_data)
             count_data=self._count_encoding(label_data)
-            return count_data.reset_index()
+            return count_data
         except:
             raise CustomException(sys)
 

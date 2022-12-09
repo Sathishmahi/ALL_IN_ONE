@@ -17,6 +17,7 @@ from source_code.train_test_split import train_test_split_fn
 
 class combine_all_functions:
     def __init__(self):
+        self.kmeans_col_li=[]
         self.non_hyper_parameter_classifier_model_obj=non_hyper_parameter_classifier_model()
         self.replace_nan_categorical_data_obj=replace_nan_categorical_data()
         self.hyper_parameter_classifier_obj=hyper_parameter_classifier()
@@ -42,7 +43,7 @@ class combine_all_functions:
                     is_im=True
                     return is_im
         return is_im
-    def demo(self,feature:pd.DataFrame,label:pd.DataFrame,isClassification=True)->pd.DataFrame:
+    def demo(self,feature:pd.DataFrame,label:pd.DataFrame,isClassification=True,predict=False)->pd.DataFrame:
         replace_nan_cat_data=self.replace_nan_categorical_data_obj.combine_all(feature)
         print(f'===================done replace_nan_CAT=========================')
         handle_cat_data=self.cat_value_obj.combine_all(replace_nan_cat_data)
@@ -59,17 +60,24 @@ class combine_all_functions:
         #find_corr_data=self.find_correlation_obj.remove_corr_col(feature)
         print(f'===================done find corr data=========================')
         # find_corr_data['label']=raw_data[label_column]
-        print(f'===================done remove outliers data=========================')
         #transformation_data=self.transformation_obj.std_scaler_dist(detect_remove_outliers_data)
         transformation_data=self.transformation_obj.std_scaler_dist(find_corr_data)
         print(f'===================done transformation data=========================')
-        detect_remove_outliers_data,label=self.detect_remove_outliers_obj.remove_outlier(transformation_data,label)
+        final_data,label=self.detect_remove_outliers_obj.remove_outlier(transformation_data,label)
 
         # transformation_data=self.transformation_obj.std_scaler_dist(feature)
         print(f'===================done for outlier removed data=========================')
-        final_data=self.remove_col_obj.all_columns_remove(detect_remove_outliers_data)
-        print(f'===================done for remove unwanted columns=========================')
+        if predict==False:
+            final_data=self.remove_col_obj.all_columns_remove(final_data)
+            [self.kmeans_col_li.append(col) for col in final_data.columns]
+            print(f'===================done for remove unwanted columns=========================')
+        else:
+            print('True')
+            print(self.kmeans_col_li)
+            print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+            final_data=final_data[self.kmeans_col_li]
 
+            return final_data,label
         return final_data,label
     def model_trainer(self,feature:pd.DataFrame,label:pd.DataFrame,isClassification=True):
         #final_pre_process_data,label=self._combine_all_data_preprocessing(path,label_column,isClassification)
@@ -89,10 +97,17 @@ class combine_all_functions:
 
        
         train_feature,train_label=self.demo(x_train,y_train,isClassification)
+        print('==================================================')
+        print(train_feature.columns)
+        print('==================================================')
+
         self.model_trainer(train_feature,train_label)
         print('+++Train Complete++++')
-        test_faeture,test_label=self.demo(x_test,y_test,isClassification)
-        df_li,out_li=self.model_predict(test_feature)
+        test_faeture,test_label=self.demo(x_test,y_test,isClassification,True)
+        print('==================================================')
+        print(test_faeture.columns)
+        print('==================================================')
+        df_li,out_li=self.model_predict(test_faeture)
         return df_li,out_li
         # for x in data_list:
         #     for y in data_list:

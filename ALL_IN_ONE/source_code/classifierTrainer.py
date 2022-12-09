@@ -67,8 +67,16 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
               model_hyperParaMeter=hyper_parameter[model_name]
 
               model.set_params(**model_hyperParaMeter)
-        print(label.unique())
-        fit_model=[i.fit(feature,label) for i in model_li]
+        print('==='*30)
+        print('><><><><><><><><><><><><><><><><><><><><><><>'*20)
+        print(model_name)
+        print(feature.columns)
+        print('><><><><><><><><><><><><><><><><><><><><><><>'*20)
+        print('==='*30)
+        for i in model_li:
+          print(f'model name --------------->     {i}')
+          print(f'columns names ------------->    {feature.columns}')
+          i.fit(feature,label)
         [model_score.update({i:i.score(feature,label)}) for i in model_li]
         find_max_accuracy_model=max(model_score,key=model_score.get)
 
@@ -88,7 +96,10 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
       kmeans=KMeans(n_clusters=n_groups)
       #data=data.drop(['outcome','kmeans_label'],axis=1)
       #final_data= data.loc[:, ~data.columns.str.contains('^Unnamed')]
-      print(f'KMeans model trainned columns name ---->   {data.columns}')
+      print('==================KMEANS TRAINED COLUMNS ============================')
+      print(data.columns)
+      print('==================================================')
+
       kmeans_label=kmeans.fit_predict(data)
       
       path=os.path.join('KMeans_model_dir')
