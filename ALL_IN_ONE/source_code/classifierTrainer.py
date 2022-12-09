@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+import sys
 import joblib
 import numpy as np
 import pandas as pd
@@ -8,7 +9,7 @@ from sklearn.cluster import KMeans
 from source_code.hyper_parameter import hyper_parameter_classifier
 from model_folder.classification import svc,logisticRegression,randomForestClassifier,xgbClassifier,knnClassifier,decisionTreeClassifier,naive_bayes_Gaus,naive_bayes_Mul
 from model_folder.regression import linearRegression,randomForestRegressor,svr,kneighborsRegressor,randomForestRegressor,decisiontreeregressor
-
+from exception import CustomException
 class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
   def __init__(self):
     self.hyper_parameter_classifier_obj=hyper_parameter_classifier()
@@ -36,8 +37,8 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
       # xgb_clf=xgbClassifier
       return model_list
 
-    except Exception as e:
-      raise e
+    except :
+      raise CustomException(sys)
 
 
   def _default_model_para_training(self,feature:pd.DataFrame,label=None,hyper_parameter=dict()):
@@ -79,8 +80,8 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
         [model_score.update({i:i.score(feature,label)}) for i in model_li]
         find_max_accuracy_model=max(model_score,key=model_score.get)
         return find_max_accuracy_model
-    except Exception as e:
-      raise e
+    except :
+      raise CustomException(sys)
 
   def _cluster_data(self,data:pd.DataFrame,n_groups):
     try:
@@ -97,8 +98,8 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
       joblib.dump(kmeans,path+'/'+file_name)
       self._final_all_model_dic.update({'kmeans_model':kmeans})
       return kmeans_label
-    except Exception as e:
-      raise e
+    except :
+      raise CustomException(sys)
 
   def _divide_groups(self,df:pd.DataFrame,col_name:str) -> list:
     try:
@@ -108,8 +109,8 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
         new_data=df[df[col_name]==i]
         final_li.append(new_data.drop(col_name,axis=1))
       return final_li
-    except Exception as e:
-      raise e
+    except:
+      raise CustomException(sys)
   
 
 
@@ -153,8 +154,8 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
     
 
       return final_output_list,final_df_list
-    except Exception as e:
-      raise e
+    except :
+      raise CustomException(sys)
 
   def model_predicted(self,feature:pd.DataFrame):
     feature_copy=feature.copy()
@@ -183,8 +184,8 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
         final_out,final_df=self._helper_model_predicted(kmeans_path=kmeans_path,model_path=model_path,feature=feature_copy)
         return final_out,final_df
 
-    except Exception as e:
-      raise e
+    except :
+      raise CustomException(sys)
 
   def split_data_training(self,feature:pd.DataFrame,label=None,predict=False,hyper_parameter=False):
 
@@ -224,8 +225,8 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
           joblib.dump(model,path+'/'+file_name)
       return self.model_dict
 
-    except Exception as e:
-      raise e
+    except 
+      raise CustomException(sys)
     
   def model_score(self,feature:pd.DataFrame,label:pd.Series):
     pass

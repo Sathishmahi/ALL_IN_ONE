@@ -2,7 +2,8 @@ import pandas as pd
 from path_name_provoiders.all_names import corr_remove_columns_list as remove_col_li
 from path_name_provoiders.all_names import corrrelation_dict as corr_dic
 from path_name_provoiders.all_names import most_corrrelation_dict as most_corr_dic
-
+import sys
+from exception import CustomException
 class find_correlation:
   def __init__(self):
     pass
@@ -30,8 +31,8 @@ class find_correlation:
         
       
       return corr_dic,most_corr_dic,remove_col_li
-    except Exception as e:
-      raise e
+    except :
+      raise CustomException(sys)
   def remove_corr_col(self,data)->pd.DataFrame:
     try:
       _,_,corr_list=self._retun_corr(data)
@@ -39,5 +40,5 @@ class find_correlation:
       after_corr_col_remove_data=data.drop(columns=corr_list)
       after_corr_col_remove_data.to_csv('all_datasets/after_corr_col_remove_data.csv')
       return after_corr_col_remove_data
-    except Exception as e:
-      raise e
+    except:
+      raise CustomException(sys)

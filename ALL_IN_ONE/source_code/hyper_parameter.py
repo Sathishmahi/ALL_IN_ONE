@@ -5,6 +5,8 @@ from path_name_provoiders.all_names import best_parameter as best_parameter
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import RandomizedSearchCV
+from exception import CustomException
+import sys
 from model_folder.all_model_dic import all_model
 class hyper_parameter_classifier:
   def __init__(self):
@@ -16,8 +18,8 @@ class hyper_parameter_classifier:
         print(hyper_para)
         return hyper_para
     
-    except Exception as e:
-        raise e
+    except:
+        raise CustomException(sys)
         
   def _return_best_hyper_para(self,model:object,model_name:str,x:pd.DataFrame,y:pd.DataFrame)->dict:
 
@@ -31,8 +33,8 @@ class hyper_parameter_classifier:
         best_parameter.update({model_name:{'best_params':para,'best_score':score}})
         return para
         
-    except Exception as e:
-        raise e
+    except :
+        raise CustomException(sys)
 
   def hyper_parameter_tuneing_classifier(self,classifier_name:str,x:pd.DataFrame,y:pd.DataFrame):
 
@@ -44,6 +46,6 @@ class hyper_parameter_classifier:
       print(best_para)
       return best_para
 
-    except Exception as e:
-      raise e
+    except:
+      raise CustomException(sys)
 

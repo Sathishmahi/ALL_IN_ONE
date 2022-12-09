@@ -4,6 +4,8 @@ from path_name_provoiders.all_names import outlier_index_dict as outlier_ind_dic
 from path_name_provoiders.all_names import outlier_column_percentage_dic as col_per_dic
 import pandas as pd
 import numpy as np
+import sys
+from exception import CustomException
 class detect_remove_outliers:
   def __init__(self):pass
   def _detect_outlier(self,data:pd.DataFrame)->list:
@@ -28,8 +30,8 @@ class detect_remove_outliers:
       user_outlier_li.append(col_per_dic) 
       #print(set(ind_li))
       return list(set(ind_li)),user_outlier_li
-    except Exception as e:
-      raise e
+    except :
+      raise CustomException(sys)
   def remove_outlier(self,data:pd.DataFrame,label:pd.DataFrame)->pd.DataFrame:
     try:
       ind_li,_=self._detect_outlier(data)
@@ -39,6 +41,6 @@ class detect_remove_outliers:
       new_dataframe.to_csv('all_datasets/after_remove_outlier.csv')
     
       return new_dataframe,label
-    except Exception as e:
-      raise e
+    except:
+      raise CustomException(sys)
 
