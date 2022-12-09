@@ -25,11 +25,19 @@ class remove_col:
       return data
     except:
       raise CustomException(sys)
+  def _removed_unnaed_colNames(self,data:pd.DataFrame)->pd.DataFrame:
+    try:
+      col_names=[col for col in data.columns if ('Unnamed' in col) or ('index' in col)]
+      data.drop(columns=col_names,inplace=True)
+      return data
+    except:
+      raise CustomException(sys)
   def all_columns_remove(self,data:pd.DataFrame)->pd.DataFrame:
     try:
       remove_col_zero_std_data=self._remove_col_zero_std(data)
       remove_col_maxNan_val_data=self._remove_col_maxNan_val(remove_col_zero_std_data)
       final_dataframe=continuous_data_remove_data=self._continuous_data_remove(remove_col_maxNan_val_data)
-      return final_dataframe
+      remove_unnamed_col=self._removed_unnaed_colNames(final_dataframe)
+      return remove_unnamed_col
     except:
       raise CustomException(sys)

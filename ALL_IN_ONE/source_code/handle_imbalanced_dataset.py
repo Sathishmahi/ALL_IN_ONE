@@ -20,6 +20,6 @@ class handle_imbalanced_data:
       X_res,y_res=smk.fit_resample(feature,label)
       x_final=pd.concat((X_res,y_res),axis=1)
       final_df.to_csv('all_datasets/after_handle_imbalanced_data.csv')
-      return X_res,y_res
+      return X_res.reset_index(),y_res.reset_index()
     except:
       raise CustomException(sys)

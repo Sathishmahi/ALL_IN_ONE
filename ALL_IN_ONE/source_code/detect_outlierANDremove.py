@@ -35,12 +35,16 @@ class detect_remove_outliers:
   def remove_outlier(self,data:pd.DataFrame,label:pd.DataFrame)->pd.DataFrame:
     try:
       ind_li,_=self._detect_outlier(data)
-      new_dataframe=data.drop(ind_li)
-      # feature=new_dataframe.drop(columns=out_col_name)
-      label=label.drop(ind_li)
-      new_dataframe.to_csv('all_datasets/after_remove_outlier.csv')
+      print(ind_li)
+      print('=========================================')
+      label=label.set_axis(list(data.index))
+      print(label.index)
+      data.drop(ind_li,inplace=True)
+      label.drop(ind_li,inplace=True)
+      
+      data.to_csv('all_datasets/after_remove_outlier.csv')
     
-      return new_dataframe,label
+      return data,label
     except:
       raise CustomException(sys)
 

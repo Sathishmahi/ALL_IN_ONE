@@ -39,6 +39,6 @@ class find_correlation:
       print(corr_list)
       after_corr_col_remove_data=data.drop(columns=corr_list)
       after_corr_col_remove_data.to_csv('all_datasets/after_corr_col_remove_data.csv')
-      return after_corr_col_remove_data
+      return after_corr_col_remove_data.reset_index()
     except:
       raise CustomException(sys)

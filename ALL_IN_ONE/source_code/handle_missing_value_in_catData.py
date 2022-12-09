@@ -1,13 +1,13 @@
 from sklearn.linear_model import LogisticRegression
 import pandas as pd
 from path_name_provoiders.all_names import handle_miss_val_cat_dict as dic
-from esource_code.xception import CustomException
+from source_code.exception import CustomException
 import sys
 class replace_nan_categorical_data:
   def __init__(self):
     pass
   def replace_nan_most_frequncy_data(self,data:pd.DataFrame):
-    try;
+    try:
       replace_nan_col=[col for col in data.columns if ((data[col].nunique()/len(data))>0.15) and ((data[col].nunique()/len(data))<=0.55) and data[col].isna().any() and (str(data[col].dtypes).lower().startswith('o'))]
       for col in replace_nan_col:
           data[col].fillna(data[col].mode().values[0],inplace=True)
@@ -51,7 +51,7 @@ class replace_nan_categorical_data:
       data=self.remove_col(data)
       data=self.handle_miss_values_catogorical_features(data)
       data=self.replace_nan_most_frequncy_data(data)
-      return data
+      return data.reset_index()
     except:
       raise CustomException(sys)
     

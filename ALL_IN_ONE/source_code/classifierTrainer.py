@@ -87,9 +87,9 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
     try:
       kmeans=KMeans(n_clusters=n_groups)
       #data=data.drop(['outcome','kmeans_label'],axis=1)
-      final_data= data.loc[:, ~data.columns.str.contains('^Unnamed')]
-      print(f'KMeans model trainned columns name ---->   {final_data.columns}')
-      kmeans_label=kmeans.fit_predict(final_data)
+      #final_data= data.loc[:, ~data.columns.str.contains('^Unnamed')]
+      print(f'KMeans model trainned columns name ---->   {data.columns}')
+      kmeans_label=kmeans.fit_predict(data)
       
       path=os.path.join('KMeans_model_dir')
       os.makedirs(path,exist_ok=True)
@@ -225,7 +225,7 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
           joblib.dump(model,path+'/'+file_name)
       return self.model_dict
 
-    except 
+    except :
       raise CustomException(sys)
     
   def model_score(self,feature:pd.DataFrame,label:pd.Series):

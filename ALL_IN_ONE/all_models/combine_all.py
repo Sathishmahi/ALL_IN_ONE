@@ -11,6 +11,7 @@ from source_code.find_Corr_remove import find_correlation
 from source_code.transformation import transformation
 from source_code.replace_NaN import replace_nan
 from source_code.handle_categorical_features import cat_value
+from source_code.remove_unwntedColumns import remove_col
 from source_code.train_test_split import train_test_split_fn
 
 
@@ -61,14 +62,18 @@ class combine_all_functions:
         print(f'===================done remove outliers data=========================')
         #transformation_data=self.transformation_obj.std_scaler_dist(detect_remove_outliers_data)
         transformation_data=self.transformation_obj.std_scaler_dist(find_corr_data)
-        detect_remove_outliers_data,label=self.detect_remove_outliers_obj.remove_outlier(transformation_data,raw_data[label_column])
+        print(f'===================done transformation data=========================')
+        detect_remove_outliers_data,label=self.detect_remove_outliers_obj.remove_outlier(transformation_data,label)
 
         # transformation_data=self.transformation_obj.std_scaler_dist(feature)
-        print(f'===================done transformation data=========================')
-        return detect_remove_outliers_data,label
+        print(f'===================done for outlier removed data=========================')
+        final_data=self.remove_col_obj.all_columns_remove(detect_remove_outliers_data)
+        print(f'===================done for remove unwanted columns=========================')
+
+        return final_data,label
     def model_trainer(self,feature:pd.DataFrame,label:pd.DataFrame,isClassification=True):
         #final_pre_process_data,label=self._combine_all_data_preprocessing(path,label_column,isClassification)
-        print(final_pre_process_data.isna().sum())
+        #print(final_pre_process_data.isna().sum())
         self.non_hyper_parameter_classifier_model_obj.split_data_training(feature,label,hyper_parameter=True)
         print('++++++++++++++++++++++++++++++++ training compleate ++++++++++++++++++++++++++++++++++++++++++')
     def model_predict(self,data:pd.DataFrame):
@@ -79,16 +84,28 @@ class combine_all_functions:
         feature=raw_data.drop(columns=label_column)
         label=raw_data[label_column]
         x_train,x_test,y_train,y_test=train_test_split_fn(feature=feature,label=label)
+        print(x_train.shape)
         data_list=[x_train,x_test,y_train,y_test]
-        for x in data_list:
-            for y in data_list:
-                if 'train' in x and 'train' in y and x!=y:
-                    train_feature,train_label=self.demo(x_train,y_train)
-                    self.model_trainer()
-                elif 'test' in x and 'test' in y and x!=y:
-                    test_faeture,test_label=self.demo(x_test,y_test)
-                    df_li,out_li=self.model_predict(test_feature)
-                    return df_li,out_li
+
+       
+        train_feature,train_label=self.demo(x_train,y_train,isClassification)
+        self.model_trainer(train_feature,train_label)
+        print('+++Train Complete++++')
+        test_faeture,test_label=self.demo(x_test,y_test,isClassification)
+        df_li,out_li=self.model_predict(test_feature)
+        return df_li,out_li
+        # for x in data_list:
+        #     for y in data_list:
+        #         if x.shape[0]==y.shape[0] and x.shape[1]!=y.shape[1]:
+        #             print(x.shape,y.shape)
+        #             train_feature,train_label=self.demo(x_train,y_train,isClassification)
+        #             self.model_trainer()
+        #             print('Train Complete')
+        #         elif (x.shape[0]==y.shape[0]) and (x.shape[1]!=y.shape[1]):
+        #             test_faeture,test_label=self.demo(x_test,y_test,isClassification)
+        #             df_li,out_li=self.model_predict(test_feature)
+        #             return df_li,out_li
+
                     
 
                     
