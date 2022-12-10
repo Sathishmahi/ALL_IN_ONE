@@ -133,3 +133,4 @@ dmypy.json
 model_dir
 KMeans_model_dir
 all_datasets
+*.csv

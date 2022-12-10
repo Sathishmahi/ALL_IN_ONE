@@ -17,10 +17,9 @@ from source_code.exception import CustomException
 from sklearn.metrics import accuracy_score,f1_score,confusion_matrix,precision_score,recall_score
 from sklearn.metrics import mean_absolute_error,mean_squared_error,r2_score
 import sys
+import json
 #from source_code.model_score import return_model_score
 
-from source_code.classifierTrainer import score_dict
-all_classification_score=dict()
 
 class combine_all_functions:
     def __init__(self):
@@ -95,32 +94,41 @@ class combine_all_functions:
         self.non_hyper_parameter_classifier_model_obj.split_data_training(feature,label,hyper_parameter=True)
         print('++++++++++++++++++++++++++++++++ training compleate ++++++++++++++++++++++++++++++++++++++++++')
     def model_predict(self,data:pd.DataFrame):
-        df_li,out_li=self.non_hyper_parameter_classifier_model_obj.model_predicted(data)
+        out_li,df_li=self.non_hyper_parameter_classifier_model_obj.model_predicted(data)
         return df_li,out_li
     
-    def classification_model_score(self,y_pre,y_true):
-        print(f'score dict =========>     {score_dict}')
+    # def classification_model_score(self,y_pre,y_true):
+    #     print(f'score dict =========>     {score_dict}')
 
-        try:
-            for counter,ind in enumerate(score_dict.values()):
-                print(ind)
-                print('======TRUE=====',y_true)
+    #     try:
+    #         for counter,ind in enumerate(score_dict.values()):
+    #             print(ind)
+    #             print('======Y TRUE=====',y_true)
+    #             print('=====Y PRE========',y_pre)
+    #             print(f' ILOC OF Y TURE  {y_true.index}',type(y_true))
+    #             print(f'======  {len(y_true)} ========= {(len(y_pre))}')
                 
-                y_true=y_true['Survived'].iloc[list(ind)]
-                print(f' y true =======>   {y_true}')
-                accuracy=accuracy_score(y_true,y_pre[counter])
-                all_classification_score.update({f"accuracy_score_{counter}":accuracy})
-                precision=precision_score(y_true,y_pre[counter])
-                all_classification_score.update({f"precision_score_{counter}":precision})
-                recall=recall_score(y_true,y_pre[counter])
-                all_classification_score.update({f"recall_score_{counter}":recall})
-                f1score=f1_score(y_true,y_pre[counter])
-                all_classification_score.update({f"recall_score_{counter}":recall})
-                confusion_matrix_model=confusion_matrix(y_true,y_pre[counter])
-                all_classification_score.update({f"confusion_matrix_{counter}":confusion_matrix_model})
-            return all_classification_score
-        except:
-            CustomException(sys)
+    #             y_true=y_true.iloc[ind]
+    #             print('Enter')
+                
+    #             accuracy=accuracy_score(y_true,y_pre[counter])
+    #             all_classification_score.update({f"accuracy_score_{counter}":accuracy})
+    #             precision=precision_score(y_true,y_pre[counter])
+    #             all_classification_score.update({f"precision_score_{counter}":precision})
+    #             recall=recall_score(y_true,y_pre[counter])
+    #             all_classification_score.update({f"recall_score_{counter}":recall})
+    #             f1score=f1_score(y_true,y_pre[counter])
+    #             all_classification_score.update({f"recall_score_{counter}":recall})
+    #             confusion_matrix_model=confusion_matrix(y_true,y_pre[counter])
+    #             all_classification_score.update({f"confusion_matrix_{counter}":confusion_matrix_model})
+    #             with open('dic.txt','w') as f:
+    #                 print('create dic.txt')
+    #                 f.write(json.dumps(all_classification_score))
+    #         return all_classification_score
+    #     except:
+    #         CustomException(sys)
+    def find_model_are_OF(self,all_model_dic,best_model,score_list,test_feature,test_label):
+        for model in best_model
 
     def _combine_all_data_preprocessing(self,path:str,label_column:str,isClassification=True):
         raw_data=pd.read_csv(path)
@@ -130,20 +138,25 @@ class combine_all_functions:
         print(x_train.shape)
         data_list=[x_train,x_test,y_train,y_test]
 
-       
+
         train_feature,train_label=self.demo(x_train,y_train,isClassification)
-        print('==================================================')
-        print(train_feature.columns)
-        print('==================================================')
+        
 
         self.model_trainer(train_feature,train_label)
         print('+++Train Complete++++')
         test_faeture,test_label=self.demo(x_test,y_test,isClassification,True)
-        print('==================================================')
-        print(test_faeture.columns)
+        print('======================TEST LABEL ============================')
+        
+        print(len(test_label))
+        print(len(test_label))
         print('==================================================')
         df_li,out_li=self.model_predict(test_faeture)
-        dic=self.classification_model_score(out_li,test_label)
+        print('======================OUT LABEL ============================')
+        
+        print(len(out_li[0]),len(out_li[1]))
+        print(len(out_li))
+        print('==================================================')
+        dic=self.non_hyper_parameter_classifier_model_obj.classification_model_score(out_li,test_label)
         print(dic)
         return dic
         # for x in data_list:

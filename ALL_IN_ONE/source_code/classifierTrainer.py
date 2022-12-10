@@ -10,12 +10,17 @@ from source_code.hyper_parameter import hyper_parameter_classifier
 from model_folder.classification import svc,logisticRegression,randomForestClassifier,xgbClassifier,knnClassifier,decisionTreeClassifier,naive_bayes_Gaus,naive_bayes_Mul
 from model_folder.regression import linearRegression,randomForestRegressor,svr,kneighborsRegressor,randomForestRegressor,decisiontreeregressor
 from source_code.exception import CustomException
-score_dict=dict()
+from sklearn.metrics import accuracy_score,f1_score,confusion_matrix,precision_score,recall_score
+from sklearn.metrics import mean_absolute_error,mean_squared_error,r2_score
+import sys
+import json
+
 class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
   def __init__(self):
     self.hyper_parameter_classifier_obj=hyper_parameter_classifier()
     self._final_all_model_dic=dict()
     self.model_dict=dict()
+    self.score_dict=[]
     
   def _model_created(self,isClassification=True,hyper_parameter=dict()):
     model_list=[]
@@ -69,19 +74,20 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
 
               model.set_params(**model_hyperParaMeter)
         print('==='*30)
-        print('><><><><><><><><><><><><><><><><><><><><><><>'*20)
+        print('><><><><><><><><><><><><><><><><><><><><><><>'*3)
         print(model_name)
         print(feature.columns)
-        print('><><><><><><><><><><><><><><><><><><><><><><>'*20)
+        print('><><><><><><><><><><><><><><><><><><><><><><>'*3)
         print('==='*30)
         for i in model_li:
           print(f'model name --------------->     {i}')
           print(f'columns names ------------->    {feature.columns}')
           i.fit(feature,label)
+          
         [model_score.update({i:i.score(feature,label)}) for i in model_li]
         find_max_accuracy_model=max(model_score,key=model_score.get)
 
-        return find_max_accuracy_model
+        return find_max_accuracy_model,model_score
 
       else:
         model_li=self._model_created(isClassification=True)
@@ -151,8 +157,9 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
                 feature_copy['kmean_label']=kmean_label
                 for unique in feature_copy['kmean_label'].unique():
                   ind=feature_copy[feature_copy['kmean_label']==unique].index
-                  score_dict.update({unique:ind})
-                  print(ind)
+                  #self.score_dict.update({unique:ind})
+                  self.score_dict.append(ind)
+                  
                 unique_val=feature_copy['kmean_label'].unique()
                 for unique in unique_val:
                   kmeans_label_feature=feature_copy[feature_copy['kmean_label']==unique]
@@ -229,7 +236,8 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
         for data,val in zip(split_data,feature['kmeans_label'].value_counts().index):
           split_feature=data.drop(columns='outcome')
           split_label=data['outcome']
-          model_obj=self._default_model_para_training(split_feature,split_label,hyper_parameter=all_best_parameter_dict)
+          model_obj,modelscore=self._default_model_para_training(split_feature,split_label,hyper_parameter=all_best_parameter_dict)
+          print(f'MODEL SCORE ============================>    {modelscore}')
           self.model_dict.update({f'kmeans_model_{val}':model_obj})
         ct = datetime.datetime.now()
         time_stamp=str(ct).replace(' ','_').replace('-','_').replace(':','_').replace('.','_')
@@ -243,6 +251,47 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
 
     except :
       raise CustomException(sys)
+  
+  def classification_model_score(self,y_pre,y_true):
+
+    print(f'score dict =========>     {self.score_dict}')
+    all_classification_score=dict()
+    final_list=[]
+    try:
+
+      for counter,ind in enumerate(self.score_dict):
+        print(ind)
+        print('======Y TRUE=====',y_true)
+        print('=====Y PRE========',y_pre)
+        print(f'======  {len(y_true)} ========= {(len(y_pre))}')
+        
+        yTrue=[y_true['Survived'][inde] for inde in ind ]
+        print('Enter')
+        
+        accuracy=accuracy_score(yTrue,y_pre[counter])
+        print(accuracy)
+        # all_classification_score['accuracy_score']=accuracy
+        final_list.append(accuracy)
+        precision=precision_score(yTrue,y_pre[counter])
+        print(precision)
+        # all_classification_score['precision_score']=precision
+        final_list.append(precision)
+        recall=recall_score(yTrue,y_pre[counter])
+        print(recall)
+        # all_classification_score['recall_score']=recall
+        final_list.append(recall)
+        f1score=f1_score(yTrue,y_pre[counter])
+        print(f1score)
+        # all_classification_score['recall_score']=f1score
+        final_list.append(f1score)
+        confusion_matrix_model=confusion_matrix(yTrue,y_pre[counter])
+        print(confusion_matrix_model)
+        # all_classification_score['confusion_matrix']=confusion_matrix_model
+        final_list.append(confusion_matrix_model)
+   
+      return final_list
+    except:
+        CustomException(sys)
     
   def model_score(self,feature:pd.DataFrame,label:pd.Series):
     pass
