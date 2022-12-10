@@ -29,9 +29,7 @@ class replace_nan_categorical_data:
           predict_in=data[data[label].isnull()].index.tolist()
 
           feature_ind=[ind for ind in data.index if ind not in predict_in]
-          print(feature_ind)
-          print('====================================')
-          print(feature.index)
+          
           
           y_train=label_data.iloc[feature_ind]
           print('DONE Y_TRAIN')

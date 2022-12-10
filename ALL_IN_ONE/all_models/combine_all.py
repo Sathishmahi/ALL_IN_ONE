@@ -51,14 +51,22 @@ class combine_all_functions:
                     return is_im
         return is_im
     def demo(self,feature:pd.DataFrame,label:pd.DataFrame,isClassification=True,predict=False)->pd.DataFrame:
-        handle_cat_data=self.cat_value_obj.combine_all(feature)
-        print(f'===================done handle_CAT data=========================')
-        replace_nan_cat_data=self.replace_nan_categorical_data_obj.combine_all(handle_cat_data)
-        print(f'===================done replace_nan_CAT=========================')
+        counter=0
+        for col in feature.columns:
+            if 'int' in str(feature[col].dtypes).lower() or 'float' in str(feature[col].dtypes).lower():
+                pass
+            else:
+                print(f' cat columns =====>   {col}')
+                counter=counter+1
+        if counter>=1:
+            handle_cat_data=self.cat_value_obj.combine_all(feature)
+            print(f'===================done handle_CAT data=========================')
+            replace_nan_cat_data=self.replace_nan_categorical_data_obj.combine_all(handle_cat_data)
+            print(f'===================done replace_nan_CAT=========================')
         
        
         #replace_nan_data=self.replace_nan_obj.mean_median_mode(feature)
-        replace_nan_data=self.replace_nan_obj.replace_nan_knnimpute(replace_nan_cat_data)
+        replace_nan_data=self.replace_nan_obj.replace_nan_knnimpute(feature)
         print(f'===================done replace_nan=========================')
         if isClassification:
             TorF=self.is_imbalanced(pd.DataFrame(label,columns=['label']),cl_name='label')
@@ -127,8 +135,8 @@ class combine_all_functions:
     #         return all_classification_score
     #     except:
     #         CustomException(sys)
-    def find_model_are_OF(self,all_model_dic,best_model,score_list,test_feature,test_label):
-        for model in best_model
+    # def find_model_are_OF(self,all_model_dic,best_model,score_list,test_feature,test_label):
+    #     for model in best_model
 
     def _combine_all_data_preprocessing(self,path:str,label_column:str,isClassification=True):
         raw_data=pd.read_csv(path)

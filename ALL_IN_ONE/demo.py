@@ -25,7 +25,7 @@ x=df.drop(columns=['label'])
 y=df['label']
 from all_models.combine_all import combine_all_functions
 cf=combine_all_functions()
-path='/config/workspace/ALL_IN_ONE/train.csv'
+path='/config/workspace/ALL_IN_ONE/internet_service_churn.csv'
 df=pd.read_csv(path)
 # feature=df.drop(columns=['Survived'])
 # label=df['Survived']
@@ -35,11 +35,10 @@ df=pd.read_csv(path)
 
 # dc=detect_remove_outliers()
 # dc.remove_outlier(feature,out_)
-dic=cf._combine_all_data_preprocessing(path,'Survived')
+dic=cf._combine_all_data_preprocessing(path,'churn')
 #train=non_hyper_parameter_classifier_model()
 
 # train.split_data_training(a,b,hyper_parameter=True)
-print(dic)
 
 
 #Index(['0', '1', '2', '4', '5', '6', '7', '9', '10', '11', '12']

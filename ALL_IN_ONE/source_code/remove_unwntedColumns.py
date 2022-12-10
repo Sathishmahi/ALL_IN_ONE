@@ -27,7 +27,7 @@ class remove_col:
       raise CustomException(sys)
   def _removed_unnaed_colNames(self,data:pd.DataFrame)->pd.DataFrame:
     try:
-      col_names=[col for col in data.columns if ('Unnamed' in col) or ('index' in col)]
+      col_names=[col for col in data.columns if ('Unnamed' in col) or ('index' in col) or ('id' in col)]
       data.drop(columns=col_names,inplace=True)
       return data
     except:

@@ -83,7 +83,7 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
           print(f'model name --------------->     {i}')
           print(f'columns names ------------->    {feature.columns}')
           i.fit(feature,label)
-          
+
         [model_score.update({i:i.score(feature,label)}) for i in model_li]
         find_max_accuracy_model=max(model_score,key=model_score.get)
 
@@ -265,7 +265,7 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
         print('=====Y PRE========',y_pre)
         print(f'======  {len(y_true)} ========= {(len(y_pre))}')
         
-        yTrue=[y_true['Survived'][inde] for inde in ind ]
+        yTrue=[y_true['churn'][inde] for inde in ind ]
         print('Enter')
         
         accuracy=accuracy_score(yTrue,y_pre[counter])
@@ -289,6 +289,35 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
         # all_classification_score['confusion_matrix']=confusion_matrix_model
         final_list.append(confusion_matrix_model)
    
+      return final_list
+    except:
+        CustomException(sys)
+
+  def regression_model_score(self,y_pre,y_true):
+
+    print(f'score dict =========>     {self.score_dict}')
+    all_classification_score=dict()
+    final_list=[]
+    try:
+
+      for counter,ind in enumerate(self.score_dict):
+        print(ind)
+        print('======Y TRUE=====',y_true)
+        print('=====Y PRE========',y_pre)
+        print(f'======  {len(y_true)} ========= {(len(y_pre))}')
+        
+        yTrue=[y_true['churn'][inde] for inde in ind ]
+        print('Enter')
+
+        mae=mean_absolute_error(yTrue,y_pre[counter])
+        print(mae)
+        final_list.append(mae)
+        mse=mean_squared_error(yTrue,y_pre[counter])
+        print(mse)
+        final_list.append(mse)
+        r2=r2_score(yTrue,y_pre[counter])
+        print(r2)
+        final_list.append(r2)
       return final_list
     except:
         CustomException(sys)
