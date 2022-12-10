@@ -54,39 +54,31 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
         if (label.nunique()/len(label)>0.1):
           print('regressor')
           model_li=self._model_created(isClassification=False)
-          
+         # todo commands
         else:
-          
           model_li=self._model_created()
-        #model_name=[str(model).replace('()','').lower() for model in model_li]
         model_name=[]
         for modelname in model_li:
           MN_with_para=str(modelname).replace('()','').lower()
           MN_without_para=MN_with_para.split('(')[0]
-          
           model_name.append(MN_without_para)
-
         for model_name in model_name:
           for model in model_li:
             if model_name==str(model).replace('()','').lower():
-            
               model_hyperParaMeter=hyper_parameter[model_name]
-
               model.set_params(**model_hyperParaMeter)
         print('==='*30)
-        print('><><><><><><><><><><><><><><><><><><><><><><>'*3)
+        print('><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>')
         print(model_name)
         print(feature.columns)
-        print('><><><><><><><><><><><><><><><><><><><><><><>'*3)
+        print('><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>')
         print('==='*30)
         for i in model_li:
           print(f'model name --------------->     {i}')
           print(f'columns names ------------->    {feature.columns}')
           i.fit(feature,label)
-
         [model_score.update({i:i.score(feature,label)}) for i in model_li]
         find_max_accuracy_model=max(model_score,key=model_score.get)
-
         return find_max_accuracy_model,model_score
 
       else:
@@ -101,14 +93,10 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
   def _cluster_data(self,data:pd.DataFrame,n_groups):
     try:
       kmeans=KMeans(n_clusters=n_groups)
-      #data=data.drop(['outcome','kmeans_label'],axis=1)
-      #final_data= data.loc[:, ~data.columns.str.contains('^Unnamed')]
       print('==================KMEANS TRAINED COLUMNS ============================')
       print(data.columns)
       print('==================================================')
-
       kmeans_label=kmeans.fit_predict(data)
-      
       path=os.path.join('KMeans_model_dir')
       os.makedirs(path,exist_ok=True)
       file_name=f'kMeans.pkl'
@@ -129,9 +117,6 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
       return final_li
     except:
       raise CustomException(sys)
-  
-
-
   def _helper_model_predicted(self,kmeans_path:str,model_path:str,feature):
 
     final_output_list,final_df_list=[],[]
@@ -144,38 +129,28 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
           print(kmeans_model_list)
           trained_model_list=os.listdir(model_path)
           if len(kmeans_model_list)!=0 and len(trained_model_list)!=0:
-          
             for kmeans_model in kmeans_model_list:
               print(kmeans_model)
               if '.pkl' in kmeans_model:
-
                 path=os.path.join(kmeans_path,kmeans_model)
                 print(path)
                 loaded_kmean_model=joblib.load(path)
-
                 kmean_label=loaded_kmean_model.predict(feature_copy)
                 feature_copy['kmean_label']=kmean_label
                 for unique in feature_copy['kmean_label'].unique():
                   ind=feature_copy[feature_copy['kmean_label']==unique].index
-                  #self.score_dict.update({unique:ind})
                   self.score_dict.append(ind)
-                  
                 unique_val=feature_copy['kmean_label'].unique()
                 for unique in unique_val:
                   kmeans_label_feature=feature_copy[feature_copy['kmean_label']==unique]
-
                   for model in list(trained_model_list[-2:]):
-
                     if f'kmeans_model_{unique}_' in model:
                       model=joblib.load(os.path.join(model_path,model))
                       kmean_feature=kmeans_label_feature.drop(columns=['kmean_label'])
-
                       predicted_val= model.predict(kmean_feature)
                       print(predicted_val)
                       final_output_list.append(predicted_val)
                       final_df_list.append(kmean_feature)
-    
-
       return final_output_list,final_df_list
     except :
       raise CustomException(sys)
@@ -274,27 +249,22 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
         final_list.append(accuracy)
         precision=precision_score(yTrue,y_pre[counter])
         print(precision)
-        # all_classification_score['precision_score']=precision
         final_list.append(precision)
         recall=recall_score(yTrue,y_pre[counter])
         print(recall)
-        # all_classification_score['recall_score']=recall
         final_list.append(recall)
         f1score=f1_score(yTrue,y_pre[counter])
         print(f1score)
-        # all_classification_score['recall_score']=f1score
         final_list.append(f1score)
         confusion_matrix_model=confusion_matrix(yTrue,y_pre[counter])
         print(confusion_matrix_model)
-        # all_classification_score['confusion_matrix']=confusion_matrix_model
         final_list.append(confusion_matrix_model)
-   
       return final_list
+
     except:
         CustomException(sys)
 
   def regression_model_score(self,y_pre,y_true):
-
     print(f'score dict =========>     {self.score_dict}')
     all_classification_score=dict()
     final_list=[]
