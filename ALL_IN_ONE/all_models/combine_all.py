@@ -157,6 +157,7 @@ class combine_all_functions:
         #             test_faeture,test_label=self.demo(x_test,y_test,isClassification)
         #             df_li,out_li=self.model_predict(test_feature)
         #             return df_li,out_li
+        #          print('end')
 
                     
 
