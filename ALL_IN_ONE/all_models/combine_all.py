@@ -150,38 +150,7 @@ class combine_all_functions:
         )
         return df_li, out_li
 
-    # def classification_model_score(self,y_pre,y_true):
-    #     print(f'score dict =========>     {score_dict}')
-
-    #     try:
-    #         for counter,ind in enumerate(score_dict.values()):
-    #             print(ind)
-    #             print('======Y TRUE=====',y_true)
-    #             print('=====Y PRE========',y_pre)
-    #             print(f' ILOC OF Y TURE  {y_true.index}',type(y_true))
-    #             print(f'======  {len(y_true)} ========= {(len(y_pre))}')
-
-    #             y_true=y_true.iloc[ind]
-    #             print('Enter')
-
-    #             accuracy=accuracy_score(y_true,y_pre[counter])
-    #             all_classification_score.update({f"accuracy_score_{counter}":accuracy})
-    #             precision=precision_score(y_true,y_pre[counter])
-    #             all_classification_score.update({f"precision_score_{counter}":precision})
-    #             recall=recall_score(y_true,y_pre[counter])
-    #             all_classification_score.update({f"recall_score_{counter}":recall})
-    #             f1score=f1_score(y_true,y_pre[counter])
-    #             all_classification_score.update({f"recall_score_{counter}":recall})
-    #             confusion_matrix_model=confusion_matrix(y_true,y_pre[counter])
-    #             all_classification_score.update({f"confusion_matrix_{counter}":confusion_matrix_model})
-    #             with open('dic.txt','w') as f:
-    #                 print('create dic.txt')
-    #                 f.write(json.dumps(all_classification_score))
-    #         return all_classification_score
-    #     except:
-    #         CustomException(sys)
-    # def find_model_are_OF(self,all_model_dic,best_model,score_list,test_feature,test_label):
-    #     for model in best_model
+    
 
     def _combine_all_data_preprocessing(
         self, path: str, label_column: str, isClassification=True
@@ -198,9 +167,9 @@ class combine_all_functions:
         train_feature, train_label = self.demo(x_train, y_train, isClassification)
 
         self.model_trainer(train_feature, train_label)
-        print("+++Train Complete++++")
+        
         test_faeture, test_label = self.demo(x_test, y_test, isClassification, True)
-        print("======================TEST LABEL ============================")
+        print("======================TEST LABEL============================")
 
         print(len(test_label))
         print(len(test_label))
@@ -208,23 +177,17 @@ class combine_all_functions:
         df_li, out_li = self.model_predict(test_faeture)
         print("======================OUT LABEL ============================")
 
-        print(len(out_li[0]), len(out_li[1]))
+        # print(len(out_li[0]), len(out_li[1]))
         print(len(out_li))
         print("==================================================")
-        dic = self.non_hyper_parameter_classifier_model_obj.classification_model_score(
-            out_li, test_label
-        )
-        print(dic)
+        if isClassification:
+            dic = self.non_hyper_parameter_classifier_model_obj.classification_model_score(
+                out_li, test_label
+            )
+        else:
+            dic = self.non_hyper_parameter_classifier_model_obj.regression_model_score(
+                out_li, test_label
+            )
+       
         return dic
-        # for x in data_list:
-        #     for y in data_list:
-        #         if x.shape[0]==y.shape[0] and x.shape[1]!=y.shape[1]:
-        #             print(x.shape,y.shape)
-        #             train_feature,train_label=self.demo(x_train,y_train,isClassification)
-        #             self.model_trainer()
-        #             print('Train Complete')
-        #         elif (x.shape[0]==y.shape[0]) and (x.shape[1]!=y.shape[1]):
-        #             test_faeture,test_label=self.demo(x_test,y_test,isClassification)
-        #             df_li,out_li=self.model_predict(test_feature)
-        #             return df_li,out_li
-        #          print('end')
+

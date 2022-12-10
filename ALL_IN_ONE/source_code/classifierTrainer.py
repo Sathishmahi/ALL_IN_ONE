@@ -1,6 +1,7 @@
 import pandas as pd
-import os
+import os,json
 import sys
+import shutil
 import joblib
 import numpy as np
 import pandas as pd
@@ -299,7 +300,26 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
                         f'{time_stamp}_{model_name}_{str(model).replace("()","")}.pkl'
                     )
                     print(f"path of file {path}/{file_name}")
-                    joblib.dump(model, path + "/" + file_name)
+                    if (
+                        len(os.listdir("model_dir")) == 0
+                        or len(os.listdir("model_dir")) < feature["kmeans_label"].nunique()
+                    ):  
+                        print('YES MODEL CREATED ')
+                        print(f'no of unique in kmeans model =====> {feature["kmeans_label"].nunique()}')
+                        print(f'len of model_dir ===========> {len(os.listdir("model_dir"))}')
+                        joblib.dump(model, path + "/" + file_name)
+                    else:
+                        print('folder created old_models')
+                        source = "model_dir"
+                        path = os.path.join("old_models")
+                        os.makedirs(path, exist_ok=True)
+                        destination = path
+                        allfiles = os.listdir(source)
+                        for f in allfiles:
+                            src_path = os.path.join(source, f)
+                            dst_path = os.path.join(destination, f)
+                            shutil.move(src_path, dst_path)
+                        joblib.dump(model, path + "/" + file_name)
             return self.model_dict
 
         except:
@@ -314,29 +334,42 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
 
             for counter, ind in enumerate(self.score_dict):
                 print(ind)
-                print("======Y TRUE=====", y_true)
-                print("=====Y PRE========", y_pre)
-                print(f"======  {len(y_true)} ========= {(len(y_pre))}")
-
-                yTrue = [y_true["churn"][inde] for inde in ind]
-                print("Enter")
+                print("====== Y TRUE VALUES =====", y_true)
+                print("===== Y PREDICTED VALUES ========", y_pre)
+                print(
+                    f"======  LEN OF Y_TRUE ----> {len(y_true)} ========= LEN OF Y_PREDICTED ------>  {(len(y_pre))}"
+                )
+                col_name = y_true.columns[0]
+                yTrue = [y_true[col_name][inde] for inde in ind]
 
                 accuracy = accuracy_score(yTrue, y_pre[counter])
-                print(accuracy)
+                print(f'ACCURACY OF {counter} MODEL =====> {accuracy}')
                 # all_classification_score['accuracy_score']=accuracy
-                final_list.append(accuracy)
+                
                 precision = precision_score(yTrue, y_pre[counter])
-                print(precision)
-                final_list.append(precision)
+                print(f'PRECISION OF {counter} MODEL =====> {precision}')
+                
                 recall = recall_score(yTrue, y_pre[counter])
-                print(recall)
-                final_list.append(recall)
+                print(f'RECALL OF {counter} MODEL =====> {recall}')
+                
                 f1score = f1_score(yTrue, y_pre[counter])
-                print(f1score)
-                final_list.append(f1score)
+                print(f'F1_SCORE OF {counter} MODEL =====> {f1score}')
+
                 confusion_matrix_model = confusion_matrix(yTrue, y_pre[counter])
-                print(confusion_matrix_model)
-                final_list.append(confusion_matrix_model)
+                print(f'CONFUSION_MATRIX OF {counter} MODEL =====> {confusion_matrix_model}')
+                final_list.extend(accuracy,precision,recall,f1score,confusion_matrix_model)
+                dic=dict()
+                dic.update({f'{counter}th_model_format[accuracy,precision,recall,f1score,confusion_matrix_model]':final_list})
+                print(dic)
+                isFile=os.path.isfile('model_score.txt')
+                if isFile:
+                    with open('model_score.txt','a+') as f:
+                        print('file created')
+                        f.write(f'{json.dump(dic)}\n\n')
+                else:
+                    with open('model_score.txt','w') as f:
+                        f.write(f'{json.dump(dic)}\n\n')
+                    
             return final_list
 
         except:
@@ -353,19 +386,18 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
                 print("======Y TRUE=====", y_true)
                 print("=====Y PRE========", y_pre)
                 print(f"======  {len(y_true)} ========= {(len(y_pre))}")
-
-                yTrue = [y_true["churn"][inde] for inde in ind]
-                print("Enter")
-
+                col_name=y_true.columns[0]
+                yTrue = [y_true[col_name][inde] for inde in ind]
+                
                 mae = mean_absolute_error(yTrue, y_pre[counter])
-                print(mae)
-                final_list.append(mae)
+                print(f'MAE OF {counter} MODEL =====> {mae}')
+                
                 mse = mean_squared_error(yTrue, y_pre[counter])
-                print(mse)
-                final_list.append(mse)
+                print(f'MSE OF {counter} MODEL =====> {mse}')
+                
                 r2 = r2_score(yTrue, y_pre[counter])
-                print(r2)
-                final_list.append(r2)
+                print(f'R2_SCOTRE OF {counter} MODEL =====> {r2}')
+                final_list.extend(mae,mse,r2)
             return final_list
         except:
             CustomException(sys)
