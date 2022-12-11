@@ -27,7 +27,7 @@ y = df["label"]
 from all_models.combine_all import combine_all_functions
 
 cf = combine_all_functions()
-path = "/config/workspace/ALL_IN_ONE/internet_service_churn.csv"
+path = "/config/workspace/ALL_IN_ONE/salary_data_cleaned.csv"
 df = pd.read_csv(path)
 # feature=df.drop(columns=['Survived'])
 # label=df['Survived']
