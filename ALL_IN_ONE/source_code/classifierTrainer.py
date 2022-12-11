@@ -285,6 +285,7 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
                     )
                     print(f"MODEL SCORE ============================>    {modelscore}")
                     self.model_dict.update({f"kmeans_model_{val}": model_obj})
+                print(f'MODEL DIC ========>     {self.model_dict}')
                 ct = datetime.datetime.now()
                 time_stamp = (
                     str(ct)
@@ -294,32 +295,35 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
                     .replace(".", "_")
                 )
                 for model_name, model in self.model_dict.items():
+                    print(f'MODEL NAME AND MODEL =======>   {model}  AND {model_name}')
                     path = os.path.join("model_dir")
                     os.makedirs(path, exist_ok=True)
                     file_name = (
                         f'{time_stamp}_{model_name}_{str(model).replace("()","")}.pkl'
                     )
-                    print(f"path of file {path}/{file_name}")
-                    if (
-                        len(os.listdir("model_dir")) == 0
-                        or len(os.listdir("model_dir")) < feature["kmeans_label"].nunique()
-                    ):  
-                        print('YES MODEL CREATED ')
-                        print(f'no of unique in kmeans model =====> {feature["kmeans_label"].nunique()}')
-                        print(f'len of model_dir ===========> {len(os.listdir("model_dir"))}')
-                        joblib.dump(model, path + "/" + file_name)
-                    else:
-                        print('folder created old_models')
-                        source = "model_dir"
-                        path = os.path.join("old_models")
-                        os.makedirs(path, exist_ok=True)
-                        destination = path
-                        allfiles = os.listdir(source)
-                        for f in allfiles:
-                            src_path = os.path.join(source, f)
-                            dst_path = os.path.join(destination, f)
-                            shutil.move(src_path, dst_path)
-                        joblib.dump(model, path + "/" + file_name)
+                    print(f"MODEL FILE PATH ========>      {path}/{file_name}")
+                    joblib.dump(model, path + "/" + file_name)
+                    # if (
+                    #     len(os.listdir("model_dir")) == 0
+                    #     or len(os.listdir("model_dir")) < feature["kmeans_label"].nunique()
+                    # ):  
+                    #     print('YES MODEL CREATED ')
+                    #     print(f'no of unique in kmeans model =====> {feature["kmeans_label"].nunique()}')
+                    #     print(f'len of model_dir ===========> {len(os.listdir("model_dir"))}')
+                    #     joblib.dump(model, path + "/" + file_name)
+                    # else:
+                    #     print('folder created old_models')
+                    #     source = "model_dir"
+                    #     path = os.path.join("old_models")
+                    #     os.makedirs(path, exist_ok=True)
+                    #     destination = path
+                    #     allfiles = os.listdir(source)
+                    #     for f in allfiles:
+                    #         src_path = os.path.join(source, f)
+                    #         dst_path = os.path.join(destination, f)
+                    #         shutil.move(src_path, dst_path)
+                    #         print('MODEL MOVED TO OLD MODELS =======>   ',f)
+                        #joblib.dump(model, path + "/" + file_name)
             return self.model_dict
 
         except:
@@ -333,7 +337,7 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
         try:
 
             for counter, ind in enumerate(self.score_dict):
-                print(ind)
+                
                 print("====== Y TRUE VALUES =====", y_true)
                 print("===== Y PREDICTED VALUES ========", y_pre)
                 print(
@@ -358,17 +362,17 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
                 confusion_matrix_model = confusion_matrix(yTrue, y_pre[counter])
                 print(f'CONFUSION_MATRIX OF {counter} MODEL =====> {confusion_matrix_model}')
                 final_list.extend(accuracy,precision,recall,f1score,confusion_matrix_model)
-                dic=dict()
-                dic.update({f'{counter}th_model_format[accuracy,precision,recall,f1score,confusion_matrix_model]':final_list})
-                print(dic)
-                isFile=os.path.isfile('model_score.txt')
-                if isFile:
-                    with open('model_score.txt','a+') as f:
-                        print('file created')
-                        f.write(f'{json.dump(dic)}\n\n')
-                else:
-                    with open('model_score.txt','w') as f:
-                        f.write(f'{json.dump(dic)}\n\n')
+                # dic=dict()
+                # dic.update({f'{counter}th_model_format[accuracy,precision,recall,f1score,confusion_matrix_model]':final_list})
+                # print(dic)
+                # isFile=os.path.isfile('model_score.txt')
+                # if isFile:
+                #     with open('model_score.txt','a+') as f:
+                #         print('file created')
+                #         f.write(f'{json.dump(dic)}\n\n')
+                # else:
+                #     with open('model_score.txt','w') as f:
+                #         f.write(f'{json.dump(dic)}\n\n')
                     
             return final_list
 
