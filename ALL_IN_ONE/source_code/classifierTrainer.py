@@ -61,10 +61,10 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
                 linearregressor = linearRegression
                 random_forest = randomForestRegressor
                 desicion_treee = decisiontreeregressor
-                knn = kneighborsRegressor
+                #knn = kneighborsRegressor
                 svc = svr
                 model_list.extend(
-                    (linearregressor, random_forest, desicion_treee, knn, svc)
+                    (linearregressor, random_forest, desicion_treee, svc)
                 )
             # xgb_clf=xgbClassifier
             return model_list
@@ -251,7 +251,7 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
                         "randomforestregressor",
                         "svr",
                         "decisiontreeregressor",
-                        "kneighborsregressor",
+                        
                     ]
 
                 else:
@@ -286,15 +286,16 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
                     print(f"MODEL SCORE ============================>    {modelscore}")
                     self.model_dict.update({f"kmeans_model_{val}": model_obj})
                 print(f'MODEL DIC ========>     {self.model_dict}')
-                ct = datetime.datetime.now()
-                time_stamp = (
-                    str(ct)
-                    .replace(" ", "_")
-                    .replace("-", "_")
-                    .replace(":", "_")
-                    .replace(".", "_")
-                )
+                
                 for model_name, model in self.model_dict.items():
+                    ct = datetime.datetime.now()
+                    time_stamp = (
+                        str(ct)
+                        .replace(" ", "_")
+                        .replace("-", "_")
+                        .replace(":", "_")
+                        .replace(".", "_")
+                    )
                     print(f'MODEL NAME AND MODEL =======>   {model}  AND {model_name}')
                     path = os.path.join("model_dir")
                     os.makedirs(path, exist_ok=True)
@@ -331,19 +332,20 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
 
     def classification_model_score(self, y_pre, y_true):
 
-        print(f"score dict =========>     {self.score_dict}")
+        # print(f"score dict =========>     {self.score_dict}")
         all_classification_score = dict()
         final_list = []
         try:
 
             for counter, ind in enumerate(self.score_dict):
-                
+                print(f'COUNTER =====>   {counter}')
                 print("====== Y TRUE VALUES =====", y_true)
                 print("===== Y PREDICTED VALUES ========", y_pre)
                 print(
                     f"======  LEN OF Y_TRUE ----> {len(y_true)} ========= LEN OF Y_PREDICTED ------>  {(len(y_pre))}"
                 )
                 col_name = y_true.columns[0]
+                print(f'col name =====>  {col_name}')
                 yTrue = [y_true[col_name][inde] for inde in ind]
 
                 accuracy = accuracy_score(yTrue, y_pre[counter])
@@ -362,18 +364,8 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
                 confusion_matrix_model = confusion_matrix(yTrue, y_pre[counter])
                 print(f'CONFUSION_MATRIX OF {counter} MODEL =====> {confusion_matrix_model}')
                 final_list.extend(accuracy,precision,recall,f1score,confusion_matrix_model)
-                # dic=dict()
-                # dic.update({f'{counter}th_model_format[accuracy,precision,recall,f1score,confusion_matrix_model]':final_list})
-                # print(dic)
-                # isFile=os.path.isfile('model_score.txt')
-                # if isFile:
-                #     with open('model_score.txt','a+') as f:
-                #         print('file created')
-                #         f.write(f'{json.dump(dic)}\n\n')
-                # else:
-                #     with open('model_score.txt','w') as f:
-                #         f.write(f'{json.dump(dic)}\n\n')
-                    
+                
+            print('done')    
             return final_list
 
         except:

@@ -80,7 +80,7 @@ class combine_all_functions:
         if counter >= 1:
             handle_cat_data = self.cat_value_obj.combine_all(feature)
             print(f"===================done handle_CAT data=========================")
-            replace_nan_cat_data = self.replace_nan_categorical_data_obj.combine_all(
+            feature = self.replace_nan_categorical_data_obj.combine_all(
                 handle_cat_data
             )
             print(f"===================done replace_nan_CAT=========================")
@@ -155,7 +155,7 @@ class combine_all_functions:
     def _combine_all_data_preprocessing(
         self, path: str, label_column: str, isClassification=True
     ):
-        raw_data = pd.read_csv(path)
+        raw_data = pd.read_csv(path,nrows=1000)
         feature = raw_data.drop(columns=label_column)
         label = raw_data[label_column]
         x_train, x_test, y_train, y_test = train_test_split_fn(

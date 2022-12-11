@@ -27,13 +27,13 @@ all_hyper_parameter_dic = {
         "ccp_alpha": [0.1, 0.2, 0.001, 0.002, 0.02],
     },
     "kneighborsclassifier": {
-        "n_neighbors": range(1, 10, 2),
+        "n_neighbors": range(3, 10, 2),
         "weights": ["uniform", "distance"],
     },
     "naive_bayes_Gaus": {},
     "linearregression": {},
     "kneighborsregressor": {
-        "n_neighbors": range(1, 10, 2),
+        "n_neighbors": range(3, 10, 2),
         "weights": ["uniform", "distance"],
         "algorithm": ["auto", "ball_tree", "kd_tree", "brute"],
     },
