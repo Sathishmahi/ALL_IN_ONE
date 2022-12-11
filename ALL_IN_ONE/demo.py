@@ -21,21 +21,29 @@ label = pd.DataFrame(raw_df.values[1::2, 2])
 
 from sklearn.linear_model import LinearRegression
 
-df = pd.read_csv("/config/workspace/ALL_IN_ONE/all_datasets/demo.csv")
-x = df.drop(columns=["label"])
-y = df["label"]
+df = pd.read_csv("/config/workspace/ALL_IN_ONE/ParisHousing.csv",nrows=1000)
+x = df.drop(columns=["price"])
+y = df["price"]
 from all_models.combine_all import combine_all_functions
 
 cf = combine_all_functions()
-path = "/config/workspace/ALL_IN_ONE/salary_data_cleaned.csv"
+path = "/config/workspace/ALL_IN_ONE/ParisHousing.csv"
 df = pd.read_csv(path)
-# feature=df.drop(columns=['Survived'])
-# label=df['Survived']
-# nan=replace_nan_categorical_data()
-# df=nan.combine_all(feature)
-# print(df.head())
 
-# dc=detect_remove_outliers()
-# dc.remove_outlier(feature,out_)
-dic = cf._combine_all_data_preprocessing(path, "churn")
+# dic = cf._combine_all_data_preprocessing(path, "price",isClassification=False)
+col=['squareMeters', 'numberOfRooms', 'hasYard', 'hasPool', 'floors',
+      'cityCode', 'cityPartRange', 'numPrevOwners', 'made', 'isNewBuilt',
+        'hasStormProtector', 'basement', 'attic', 'garage', 'hasStorageRoom',
+       'hasGuestRoom']
+non=non_hyper_parameter_classifier_model()
+#non.split_data_training(x,y,hyper_parameter=True)
+test_df=x[col]
+out,df=non.model_predicted(test_df)
+print(out)
+li=non.regression_model_score(out,y)
 
+
+# ['squareMeters', 'numberOfRooms', 'hasYard', 'hasPool', 'floors',
+#        'cityCode', 'cityPartRange', 'numPrevOwners', 'made', 'isNewBuilt',
+#        'hasStormProtector', 'basement', 'attic', 'garage', 'hasStorageRoom',
+#        'hasGuestRoom'],

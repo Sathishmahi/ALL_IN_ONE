@@ -363,7 +363,7 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
 
                 confusion_matrix_model = confusion_matrix(yTrue, y_pre[counter])
                 print(f'CONFUSION_MATRIX OF {counter} MODEL =====> {confusion_matrix_model}')
-                final_list.extend(accuracy,precision,recall,f1score,confusion_matrix_model)
+                #final_list.extend(accuracy,precision,recall,f1score,confusion_matrix_model)
                 
             print('done')    
             return final_list
@@ -378,12 +378,15 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
         try:
 
             for counter, ind in enumerate(self.score_dict):
-                print(ind)
-                print("======Y TRUE=====", y_true)
-                print("=====Y PRE========", y_pre)
+                print('REGRESSION SCORE')
+                # print(ind)
+                # print("======Y TRUE=====", y_true)
+                # print("=====Y PRE========", y_pre)
                 print(f"======  {len(y_true)} ========= {(len(y_pre))}")
-                col_name=y_true.columns[0]
-                yTrue = [y_true[col_name][inde] for inde in ind]
+                print('y_true col type',type(y_true))
+                # col_name=y_true.columns[0]
+                #print(f'col name {col_name}')
+                yTrue = [y_true[inde] for inde in ind]
                 
                 mae = mean_absolute_error(yTrue, y_pre[counter])
                 print(f'MAE OF {counter} MODEL =====> {mae}')
