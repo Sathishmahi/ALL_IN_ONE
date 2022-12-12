@@ -28,7 +28,7 @@ from all_models.combine_all import combine_all_functions
 for i in range(10):
     print(i)
 cf = combine_all_functions()
-path = r"D:\allinone\ALL_IN_ONE\diabetes.csv"
+path = r"/config/workspace/ALL_IN_ONE/diabetes.csv"
 df = pd.read_csv(path)
 # pa=os.path.join('all_datasets')
 # df.to_csv(pa+'/demo.csv')
@@ -38,7 +38,7 @@ dic = cf._combine_all_data_preprocessing(path, "Outcome",isClassification=True)
 #       'cityCode', 'cityPartRange', 'numPrevOwners', 'made', 'isNewBuilt',
 #         'hasStormProtector', 'basement', 'attic', 'garage', 'hasStorageRoom',
 #        'hasGuestRoom']
-non=non_hyper_parameter_classifier_model()
+#non=non_hyper_parameter_classifier_model()
 #non.split_data_training(x,y,hyper_parameter=True)
 # test_df=x[col]
 # out,df=non.model_predicted(test_df)
