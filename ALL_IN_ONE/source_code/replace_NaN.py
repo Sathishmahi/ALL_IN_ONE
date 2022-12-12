@@ -1,7 +1,7 @@
 from sklearn.impute import KNNImputer
 import pandas as pd
 from source_code.exception import CustomException
-import sys
+import sys,os
 
 
 class replace_nan:
@@ -32,7 +32,8 @@ class replace_nan:
                     else:
                         print(data[col].mean())
                         data[col].fillna(data[col].mean(), inplace=True)
-            data.to_csv("all_datasets/after_FillNA_data.csv")
+            pa=os.path.join('all_datasets')
+            data.to_csv(pa+"/after_FillNA_data.csv")
             return data
 
         except:
