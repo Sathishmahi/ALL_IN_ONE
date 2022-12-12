@@ -1,0 +1,1 @@
+#{LogisticRegression(C=0.8, max_iter=150, random_state=100): 0.8121827411167513, RandomForestClassifier(ccp_alpha=0.002, min_samples_split=4, n_estimators=60): 0.9441624365482234, DecisionTreeClassifier(ccp_alpha=0.2, min_samples_leaf=2, splitter='random'): 0.7258883248730964, KNeighborsClassifier(n_neighbors=1, weights='distance'): 1.0}
