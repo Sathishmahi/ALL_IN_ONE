@@ -1,6 +1,6 @@
 from sklearn.preprocessing import StandardScaler
 import pandas as pd
-import sys
+import sys,os
 from source_code.exception import CustomException
 
 
@@ -11,7 +11,8 @@ class transformation:
     def log_dist(self, data: pd.DataFrame) -> pd.DataFrame:
         try:
             final_log_transform_data = data / 2.7183
-            final_log_transform_data.to_csv("all_datasets/after_log_transform_data.csv")
+            pa=os.path.join('all_datasets')
+            final_log_transform_data.to_csv(pa+"/after_log_transform_data.csv")
             return final_log_transform_data
         except:
             raise CustomException(sys)

@@ -214,7 +214,7 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
                     counter = 0
                     for df, out in zip(final_out, final_df):
                         out_df = pd.DataFrame(out, columns=["predicted_outcome"])
-                        final_df = pd.concat((df, predicted_outcome), axis=1)
+                        final_df = pd.concat((df,out_df), axis=1)
                         path = f"all_datasets/predicted_outCome_{counter}.csv"
                         final_df.to_csv(path)
                         print(f"predicted outcome csv path ----->  {path}")
@@ -303,28 +303,28 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
                         f'{time_stamp}_{model_name}_{str(model).replace("()","")}.pkl'
                     )
                     print(f"MODEL FILE PATH ========>      {path}/{file_name}")
-                    joblib.dump(model, path + "/" + file_name)
-                    # if (
-                    #     len(os.listdir("model_dir")) == 0
-                    #     or len(os.listdir("model_dir")) < feature["kmeans_label"].nunique()
-                    # ):  
-                    #     print('YES MODEL CREATED ')
-                    #     print(f'no of unique in kmeans model =====> {feature["kmeans_label"].nunique()}')
-                    #     print(f'len of model_dir ===========> {len(os.listdir("model_dir"))}')
-                    #     joblib.dump(model, path + "/" + file_name)
-                    # else:
-                    #     print('folder created old_models')
-                    #     source = "model_dir"
-                    #     path = os.path.join("old_models")
-                    #     os.makedirs(path, exist_ok=True)
-                    #     destination = path
-                    #     allfiles = os.listdir(source)
-                    #     for f in allfiles:
-                    #         src_path = os.path.join(source, f)
-                    #         dst_path = os.path.join(destination, f)
-                    #         shutil.move(src_path, dst_path)
-                    #         print('MODEL MOVED TO OLD MODELS =======>   ',f)
-                        #joblib.dump(model, path + "/" + file_name)
+                    #joblib.dump(model, path + "/" + file_name)
+                    if (
+                        len(os.listdir("model_dir")) == 0
+                        or len(os.listdir("model_dir")) < feature["kmeans_label"].nunique()
+                    ):  
+                        print('YES MODEL CREATED ')
+                        print(f'no of unique in kmeans model =====> {feature["kmeans_label"].nunique()}')
+                        print(f'len of model_dir ===========> {len(os.listdir("model_dir"))}')
+                        joblib.dump(model, path + "/" + file_name)
+                    else:
+                        print('folder created old_models')
+                        source = "model_dir"
+                        path = os.path.join("old_models")
+                        os.makedirs(path, exist_ok=True)
+                        destination = path
+                        allfiles = os.listdir(source)
+                        for f in allfiles:
+                            src_path = os.path.join(source, f)
+                            dst_path = os.path.join(destination, f)
+                            shutil.move(src_path, dst_path)
+                            print('MODEL MOVED TO OLD MODELS =======>   ',f)
+                        joblib.dump(model, path + "/" + file_name)
             return self.model_dict
 
         except:
@@ -363,9 +363,10 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
 
                 confusion_matrix_model = confusion_matrix(yTrue, y_pre[counter])
                 print(f'CONFUSION_MATRIX OF {counter} MODEL =====> {confusion_matrix_model}')
-                #final_list.extend(accuracy,precision,recall,f1score,confusion_matrix_model)
+                final_list.extend(accuracy,precision,recall,f1score,confusion_matrix_model)
                 
-            print('done')    
+            print('done')  
+            print(final_list)  
             return final_list
 
         except:
