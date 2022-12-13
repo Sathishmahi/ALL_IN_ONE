@@ -16,7 +16,8 @@ class replace_nan:
             After_imputation_data = pd.DataFrame(
                 data=After_imputation_data, columns=columns
             )
-            After_imputation_data.to_csv("all_datasets/after_FillNA_data.csv")
+            pa=os.path.join('all_datasets')
+            After_imputation_data.to_csv(pa+"/after_FillNA_data.csv")
             return After_imputation_data
         except:
             raise CustomException(sys)

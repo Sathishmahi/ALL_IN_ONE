@@ -308,13 +308,14 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
                         len(os.listdir("model_dir")) == 0
                         or len(os.listdir("model_dir")) < feature["kmeans_label"].nunique()
                     ):  
+                        path = os.path.join("model_dir")
                         print('YES MODEL CREATED ')
                         print(f'no of unique in kmeans model =====> {feature["kmeans_label"].nunique()}')
                         print(f'len of model_dir ===========> {len(os.listdir("model_dir"))}')
                         joblib.dump(model, path + "/" + file_name)
                     else:
                         print('folder created old_models')
-                        source = "model_dir"
+                        source = os.path.join("model_dir")
                         path = os.path.join("old_models")
                         os.makedirs(path, exist_ok=True)
                         destination = path
@@ -324,7 +325,7 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
                             dst_path = os.path.join(destination, f)
                             shutil.move(src_path, dst_path)
                             print('MODEL MOVED TO OLD MODELS =======>   ',f)
-                        joblib.dump(model, path + "/" + file_name)
+                        joblib.dump(model, source + "/" + file_name)
             return self.model_dict
 
         except:
@@ -363,7 +364,7 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
 
                 confusion_matrix_model = confusion_matrix(yTrue, y_pre[counter])
                 print(f'CONFUSION_MATRIX OF {counter} MODEL =====> {confusion_matrix_model}')
-                final_list.extend(accuracy,precision,recall,f1score,confusion_matrix_model)
+                final_list.extend((accuracy,precision,recall,f1score,confusion_matrix_model))
                 
             print('done')  
             print(final_list)  
