@@ -386,9 +386,9 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
                 # print("=====Y PRE========", y_pre)
                 print(f"======  {len(y_true)} ========= {(len(y_pre))}")
                 print('y_true col type',type(y_true))
-                # col_name=y_true.columns[0]
-                #print(f'col name {col_name}')
-                yTrue = [y_true[inde] for inde in ind]
+                col_name = y_true.columns[0]
+                print(f'col name =====>  {col_name}')
+                yTrue = [y_true[col_name][inde] for inde in ind]
                 
                 mae = mean_absolute_error(yTrue, y_pre[counter])
                 print(f'MAE OF {counter} MODEL =====> {mae}')
@@ -398,7 +398,12 @@ class non_hyper_parameter_classifier_model(hyper_parameter_classifier):
                 
                 r2 = r2_score(yTrue, y_pre[counter])
                 print(f'R2_SCOTRE OF {counter} MODEL =====> {r2}')
-                final_list.extend(mae,mse,r2)
+                final_list.extend((mae,mse,r2))
+                text_file_path=os.path.join('out_dic.txt')
+                ToF=os.path.isfile(text_file_path)
+                # if ToF:
+                #     with open(text_file_path,'w') as f:
+                #         f.append(f'\n {json.dump()}')
             return final_list
         except:
             CustomException(sys)

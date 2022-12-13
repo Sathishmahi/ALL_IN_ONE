@@ -28,11 +28,11 @@ from all_models.combine_all import combine_all_functions
 for i in range(10):
     print(i)
 cf = combine_all_functions()
-path = r"E:\ALL_IN_ONE\ALL_IN_ONE\ALL_IN_ONE\train.csv"
+path = r"E:\ALL_IN_ONE\ALL_IN_ONE\ParisHousing.csv"
 df = pd.read_csv(path)
 # pa=os.path.join('all_datasets')
 # df.to_csv(pa+'/demo.csv')
-dic = cf._combine_all_data_preprocessing(path, "is_claim",isClassification=True)
+dic = cf._combine_all_data_preprocessing(path, "price",isClassification=False)
 # print(dic)
 # col=['squareMeters', 'numberOfRooms', 'hasYard', 'hasPool', 'floors',
 #       'cityCode', 'cityPartRange', 'numPrevOwners', 'made', 'isNewBuilt',
