@@ -3,7 +3,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.decomposition import PCA
 import pandas as pd
 from source_code.exception import CustomException
-import sys,os
+import sys, os
 
 
 class diamensionality_reduction:
@@ -15,7 +15,7 @@ class diamensionality_reduction:
             scaler = StandardScaler()
             pipe = make_pipeline(scaler, PCA(n_components=0.5))
             x_pca = pipe.fit_transform(feature)
-            pa=os.path.join('all_datasets')
+            pa = os.path.join("all_datasets")
             x_pca.to_csv("/after_diamension_reduce_data.csv")
             return x_pca
         except:

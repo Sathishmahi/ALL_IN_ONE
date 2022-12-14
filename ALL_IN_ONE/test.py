@@ -12,7 +12,7 @@
 # import pandas as pd
 # import numpy as np
 # import joblib
-# import sys, os
+import sys, os,json
 
 # # data_url = "http://lib.stat.cmu.edu/datasets/boston"
 # # raw_df = pd.read_csv(data_url, sep="\s+", skiprows=22, header=None)
@@ -25,13 +25,25 @@
 # #non.split_data_training(x,y,hyper_parameter=True)
 # out,df=non.model_predicted(x)
 # non.classification_model_score(out,y)
+text_file_path=os.path.join('text.txt')
+li=[1,2,2,3,34]
+dic={
+    'demo':li
+}
 
-li=[]
-
-for i in range (2):
-    print(i)
-    a='demo'
-    b='d'
-    li.extend((a,b))
+# import json
+  
+# details = {'Name': "Bob",
+#           'Age' :28}
+  
+# with open('convert.txt', 'w') as convert_file:
+#      convert_file.write(json.dumps(details))
+ToF=os.path.isfile(text_file_path)
+if ToF:
+    with open(text_file_path,'a') as f:
+        f.write(f'\n {json.dumps(dic)}')
+else:
+     with open(text_file_path,'w') as f:
+        f.write(f'\n {json.dumps(dic)}')
 
 

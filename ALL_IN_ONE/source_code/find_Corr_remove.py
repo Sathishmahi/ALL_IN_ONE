@@ -2,7 +2,7 @@ import pandas as pd
 from path_name_provoiders.all_names import corr_remove_columns_list as remove_col_li
 from path_name_provoiders.all_names import corrrelation_dict as corr_dic
 from path_name_provoiders.all_names import most_corrrelation_dict as most_corr_dic
-import sys,os
+import sys, os
 from source_code.exception import CustomException
 
 
@@ -42,10 +42,8 @@ class find_correlation:
             _, _, corr_list = self._retun_corr(data)
             print(corr_list)
             after_corr_col_remove_data = data.drop(columns=corr_list)
-            pa=os.path.join('all_datasets')
-            after_corr_col_remove_data.to_csv(
-                pa+"/after_corr_col_remove_data.csv"
-            )
+            pa = os.path.join("all_datasets")
+            after_corr_col_remove_data.to_csv(pa + "/after_corr_col_remove_data.csv")
             return after_corr_col_remove_data
         except:
             raise CustomException(sys)
